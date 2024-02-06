@@ -1,0 +1,88 @@
+details.toc-container {
+  grid-template-rows: auto 1fr;
+  transition: grid-template-rows 0.5s ease-out;
+}
+
+details.toc-container.close {
+  display: grid;
+  grid-template-rows: auto 0fr;
+  transition: grid-template-rows 0.5s ease-out;
+}
+
+summary.toc-title {
+  user-select: none;
+  cursor: pointer;
+}
+
+ul.toc-list {
+  overflow: hidden;
+
+  font-size: 1em;
+  max-width: fit-content;
+}
+
+ul.toc-list li {
+  padding: 0.1em 0;
+  margin: 0.2em 0;
+
+  list-style: none;
+}
+
+ul.toc-list li.h1indent {
+  margin-left: 0;
+}
+
+ul.toc-list li.h2indent {
+  margin-left: 0;
+}
+
+ul.toc-list li.h3indent {
+  margin-left: 1em;
+}
+
+ul.toc-list li.h4indent {
+  margin-left: 1.7em;
+}
+
+ul.toc-list li.h5indent {
+  margin-left: 2.3em;
+}
+
+ul.toc-list li.h6indent {
+  margin-left: 3em;
+}
+
+/* first and last li when mobile */
+
+ul.toc-list li:first-child {
+  padding-top: 0.6em;
+}
+
+ul.toc-list li:last-child {
+  padding-bottom: 0.6em;
+}
+
+ul.toc-list a {
+  text-decoration: none;
+  color: rgb(3, 35, 3);
+}
+
+ul.toc-list a:hover {
+  text-decoration: underline;
+}
+
+ul.toc-list span.numbering {
+  margin-right: 0.5rem;
+  color: rgb(91, 6, 128);
+}
+
+ul.toc-list span.href {
+  display: none;
+}
+
+ul.toc-list a:hover span.href {
+  display: inline-block;
+  color: gray;
+  font-size: 80%;
+  margin-left: 1rem;
+}

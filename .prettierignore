@@ -1,0 +1,6 @@
+*.mdx
+*.md
+
+.next
+node_modules
+out

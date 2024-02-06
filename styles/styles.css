@@ -1,0 +1,174 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-y: scroll; /* Force scrollbar to always be visible */
+}
+
+body {
+  padding-right: 6px; /* Adjust this value based on scrollbar width in your browser */
+}
+
+table,
+td,
+th {
+  border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table.result {
+  width: 100%;
+
+  position: relative;
+}
+
+table.result thead td {
+  text-align: center;
+}
+
+table.result tbody td {
+  vertical-align: top;
+}
+
+table td:first-child,
+table td:last-child {
+  width: 50%;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  list-style-position: inside;
+  padding-top: 5px;
+}
+
+li span {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+div#mdx-layout {
+  padding-inline: 0.5rem;
+}
+
+.flexible-marker-red {
+  background-color: rgb(255, 185, 185);
+}
+
+.flexible-marker-green {
+  background-color: rgb(192, 255, 185);
+}
+
+.flexible-marker-blue {
+  background-color: rgb(197, 217, 249);
+}
+
+.flexible-paragraph {
+  margin: 0.5rem;
+}
+
+.flexiparaph-alert {
+  padding: 0.5rem 1rem;
+  outline: 1px solid rgb(40, 38, 38);
+  outline-offset: 2px;
+  margin: 1rem 0;
+  border-radius: 4px;
+  background-color: rgb(165, 57, 62);
+  color: white;
+}
+
+.flexiparaph-warning {
+  padding: 0.4rem 1rem;
+  outline: 1px solid rgb(40, 38, 38);
+  outline-offset: 2px;
+  margin: 1rem 0;
+  border-radius: 4px;
+  background-color: rgb(255, 219, 88);
+}
+
+.counter-button {
+  align-items: center;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: none;
+
+  color: #fff;
+  background: linear-gradient(180deg, #4b91f7 0%, #367af6 100%);
+  background-origin: border-box;
+  box-shadow: 0px 0.5px 1.5px rgba(54, 122, 246, 0.25),
+    inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+p.demo-context span.demo-context-value {
+  color: red;
+}
+
+p.demo-context span.demo-context-counter {
+  color: blue;
+}
+
+.proof-for-exports {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: blue;
+  margin-left: 0.5rem;
+}
+
+pre {
+  font-size: 110%;
+  background-color: aliceblue;
+  padding: 0.5rem 1rem;
+}
+
+:not(pre) > code {
+  background-color: rgb(234, 233, 233);
+  padding-inline: 2px;
+}
+
+.remark-code-container pre {
+  margin-top: 0;
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding: 0.1rem 2rem 0.1rem 3rem;
+  background-color: lightcyan;
+  letter-spacing: 0.2em;
+  word-spacing: 0.2em;
+  border-left: 0.4em solid rgb(101, 153, 153);
+  font-style: italic;
+}
+
+blockquote code {
+  background-color: rgb(189, 231, 231);
+}
+
+blockquote span {
+  letter-spacing: 0;
+  word-spacing: 0;
+  font-style: normal;
+}
+
+.remark-code-container {
+  margin-top: 0.5rem;
+}
+
+.remark-code-title {
+  background-color: #367af6;
+  color: white;
+  padding-left: 1rem;
+}
