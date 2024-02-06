@@ -8,6 +8,7 @@ export type FlexibleTocOptions = {
   tocName?: string;
   tocRef?: TocItem[];
   levels?: number[];
+  prefix?: string;
 };
 
 export type TocItem = {
@@ -15,7 +16,7 @@ export type TocItem = {
   url: string;
   depth: 1 | 2 | 3 | 4 | 5 | 6;
   numbering: number[];
-  parent?:
+  parent:
     | "root"
     | "blockquote"
     | "footnoteDefinition"
@@ -26,12 +27,11 @@ export type TocItem = {
 const DEFAULT_SETTINGS: FlexibleTocOptions = {
   tocName: "toc",
   tocRef: [],
-  levels: [2, 3, 4, 5, 6],
-  // level-1 is excluded by default in "levels" since the article h1 heading wouldn't be in the Toc in general
+  levels: [2, 3, 4, 5, 6], // level-1 is excluded by default since the article h1 is not expected to be in the Toc
 };
 
 /**
- * adds numberings to TOC items by mutating
+ * adds numberings to the TOC items by mutating
  * why "number[]"? It is because up to you joining with dot or dash or slicing the first number (reserved for h1)
  *
  * [1]
@@ -86,11 +86,15 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
     const slugger = new GithubSlugger();
     const tocItems: TocItem[] = [];
 
-    visit(tree, "heading", (node, index, parent) => {
-      const value = toString(node);
-      const url = `#${slugger.slug(value)}`;
-      const depth = node.depth;
-      const parentType = parent?.type;
+    visit(tree, "heading", (_node, _index, _parent) => {
+      if (!_index || !_parent) return;
+
+      const value = toString(_node);
+      const url = settings.prefix
+        ? `#${settings.prefix}${slugger.slug(value)}`
+        : `#${slugger.slug(value)}`;
+      const depth = _node.depth;
+      const parent = _parent.type;
 
       if (!settings.levels!.includes(depth)) return CONTINUE;
 
@@ -99,7 +103,7 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
         url,
         depth,
         numbering: [],
-        parent: parentType,
+        parent,
       });
     });
 
