@@ -98,7 +98,5 @@ export async function getStaticProps() {
     options,
   });
 
-  // console.log(mdxSource.compiledSource);
-
   return { props: { mdxSource } };
 }

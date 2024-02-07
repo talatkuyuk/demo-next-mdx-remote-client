@@ -22,6 +22,7 @@ export type TocItem = {
     | "footnoteDefinition"
     | "listItem"
     | "mdxJsxFlowElement";
+  data?: Record<string, unknown>;
 };
 
 const DEFAULT_SETTINGS: FlexibleTocOptions = {
@@ -89,12 +90,18 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
     visit(tree, "heading", (_node, _index, _parent) => {
       if (!_index || !_parent) return;
 
-      const value = toString(_node);
+      const value = toString(_node, { includeImageAlt: false });
       const url = settings.prefix
         ? `#${settings.prefix}${slugger.slug(value)}`
         : `#${slugger.slug(value)}`;
       const depth = _node.depth;
       const parent = _parent.type;
+
+      // Other remark plugins can store custom data in node.data.hProperties
+      // I excluded node.data.hName and node.data.hChildren since not related with toc
+      const data = _node.data?.hProperties
+        ? { ..._node.data.hProperties }
+        : undefined;
 
       if (!settings.levels!.includes(depth)) return CONTINUE;
 
@@ -104,6 +111,7 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
         depth,
         numbering: [],
         parent,
+        ...(data && { data }),
       });
     });
 

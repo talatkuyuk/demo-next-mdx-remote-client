@@ -6,9 +6,10 @@ import remarkFlexibleParagraphs from "remark-flexible-paragraphs";
 import remarkFlexibleCodeTitles from "remark-flexible-code-titles";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
-import recmaMdxEscapeMissingComponents from "recma-escape-missing-components";
+import recmaMdxEscapeMissingComponents from "recma-mdx-escape-missing-components";
+import recmaMdxChangeProps from "recma-mdx-change-props";
+
 import remarkFlexibleToc, { type TocItem } from "./plugin";
-import recmaMdxChangeProps from "./plugin2";
 
 export const remarkPlugins: PluggableList = [
   remarkGfm,

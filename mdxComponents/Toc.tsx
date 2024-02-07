@@ -32,7 +32,6 @@ const Toc = ({
   exclude,
 }: Props) => {
   if (!toc) return null;
-  console.log(exclude);
 
   // ********* filtering **************
   const exludeRE = exclude
