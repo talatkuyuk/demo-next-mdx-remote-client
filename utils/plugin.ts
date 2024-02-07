@@ -4,13 +4,6 @@ import { visit, CONTINUE } from "unist-util-visit";
 import GithubSlugger from "github-slugger";
 import { toString } from "mdast-util-to-string";
 
-export type FlexibleTocOptions = {
-  tocName?: string;
-  tocRef?: TocItem[];
-  levels?: number[];
-  prefix?: string;
-};
-
 export type TocItem = {
   value: string;
   url: string;
@@ -25,6 +18,14 @@ export type TocItem = {
   data?: Record<string, unknown>;
 };
 
+export type FlexibleTocOptions = {
+  tocName?: string;
+  tocRef?: TocItem[];
+  levels?: number[];
+  prefix?: string;
+  fallback?: (toc: TocItem[]) => undefined;
+};
+
 const DEFAULT_SETTINGS: FlexibleTocOptions = {
   tocName: "toc",
   tocRef: [],
@@ -32,7 +33,7 @@ const DEFAULT_SETTINGS: FlexibleTocOptions = {
 };
 
 /**
- * adds numberings to the TOC items by mutating
+ * adds numberings to the TOC items.
  * why "number[]"? It is because up to you joining with dot or dash or slicing the first number (reserved for h1)
  *
  * [1]
@@ -42,41 +43,28 @@ const DEFAULT_SETTINGS: FlexibleTocOptions = {
  */
 function addNumbering(arr: TocItem[]) {
   for (let i = 0; i < arr.length; i++) {
-    const obj = arr[i];
-    const depth = obj.depth;
+    const tocItem = arr[i];
+    const depth = tocItem.depth;
 
-    let _numbering: number[] = [];
+    let numbering: number[] = [];
 
-    if (i === 0) {
-      // construct an array with number 1 in depth size example [1, 1]
-      _numbering = Array.from({ length: depth }, () => 1);
-    } else {
-      const prevLevel = arr[i - 1].numbering;
-      const prevDepth = arr[i - 1].depth;
+    const prevObj = i > 0 ? arr[i - 1] : undefined;
+    const prevLevel = prevObj ? prevObj.numbering : undefined;
+    const prevDepth = prevObj ? prevObj.depth : undefined;
 
-      if (!prevLevel) {
-        _numbering = Array.from({ length: depth }, () => 1);
-      } else if (depth === prevDepth) {
-        const _temporary = [...prevLevel];
-        const num = _temporary[depth - 1] + 1;
-
-        _temporary[depth - 1] = num;
-        _numbering = [..._temporary];
-      } else if (depth > prevDepth) {
-        const _temporary = [...prevLevel];
-
-        _temporary.push(1);
-        _numbering = [..._temporary];
-      } else if (depth < prevDepth) {
-        const _temporary = prevLevel.slice(0, depth);
-        const num2 = _temporary[depth - 1] + 1;
-
-        _temporary[depth - 1] = num2;
-        _numbering = [..._temporary];
-      }
+    if (!prevLevel || prevDepth === undefined) {
+      numbering = Array.from({ length: depth }, () => 1);
+    } else if (depth === prevDepth) {
+      numbering = [...prevLevel];
+      numbering[depth - 1]++;
+    } else if (depth > prevDepth) {
+      numbering = [...prevLevel, 1];
+    } else if (depth < prevDepth) {
+      numbering = prevLevel.slice(0, depth);
+      numbering[depth - 1]++;
     }
 
-    obj.numbering = _numbering;
+    tocItem.numbering = numbering;
   }
 }
 
@@ -90,11 +78,11 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
     visit(tree, "heading", (_node, _index, _parent) => {
       if (!_index || !_parent) return;
 
-      const value = toString(_node, { includeImageAlt: false });
-      const url = settings.prefix
-        ? `#${settings.prefix}${slugger.slug(value)}`
-        : `#${slugger.slug(value)}`;
+      if (!settings.levels!.includes(_node.depth)) return CONTINUE;
+
       const depth = _node.depth;
+      const value = toString(_node, { includeImageAlt: false });
+      const url = `#${settings.prefix ?? ""}${slugger.slug(value)}`;
       const parent = _parent.type;
 
       // Other remark plugins can store custom data in node.data.hProperties
@@ -102,8 +90,6 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
       const data = _node.data?.hProperties
         ? { ..._node.data.hProperties }
         : undefined;
-
-      if (!settings.levels!.includes(depth)) return CONTINUE;
 
       tocItems.push({
         value,
@@ -126,6 +112,8 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
         settings.tocRef?.push(tocItem);
       });
     }
+
+    settings.fallback?.(tocItems);
   };
 };
 
