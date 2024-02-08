@@ -1,0 +1,182 @@
+.admonition-container {
+  --ifm-color-primary: #3578e5;
+  --ifm-color-primary-dark: #306cce;
+  --ifm-color-primary-darker: #2d66c3;
+  --ifm-color-primary-darkest: #2554a0;
+  --ifm-color-primary-light: #538ce9;
+  --ifm-color-primary-lighter: #72a1ed;
+  --ifm-color-primary-lightest: #9abcf2;
+
+  --ifm-color-note: #ebedf0;
+  --ifm-color-note-dark: #d4d5d8;
+  --ifm-color-note-darker: #c8c9cc;
+  --ifm-color-note-darkest: #a4a6a8;
+  --ifm-color-note-light: #eef0f2;
+  --ifm-color-note-lighter: #f1f2f5;
+  --ifm-color-note-lightest: #f5f6f8;
+
+  --ifm-color-success: #00a400;
+  --ifm-color-success-dark: #009400;
+  --ifm-color-success-darker: #008b00;
+  --ifm-color-success-darkest: #007300;
+  --ifm-color-success-light: #26b226;
+  --ifm-color-success-lighter: #4dbf4d;
+  --ifm-color-success-lightest: #80d280;
+
+  --ifm-color-info: #54c7ec;
+  --ifm-color-info-dark: #4cb3d4;
+  --ifm-color-info-darker: #47a9c9;
+  --ifm-color-info-darkest: #3b8ba5;
+  --ifm-color-info-light: #6ecfef;
+  --ifm-color-info-lighter: #87d8f2;
+  --ifm-color-info-lightest: #aae3f6;
+
+  --ifm-color-warning: #ffba00;
+  --ifm-color-warning-dark: #e6a700;
+  --ifm-color-warning-darker: #d99e00;
+  --ifm-color-warning-darkest: #b38200;
+  --ifm-color-warning-light: #ffc426;
+  --ifm-color-warning-lighter: #ffcf4d;
+  --ifm-color-warning-lightest: #ffdd80;
+
+  --ifm-color-danger: #fa383e;
+  --ifm-color-danger-dark: #e13238;
+  --ifm-color-danger-darker: #d53035;
+  --ifm-color-danger-darkest: #af272b;
+  --ifm-color-danger-light: #fb565b;
+  --ifm-color-danger-lighter: #fb7478;
+  --ifm-color-danger-lightest: #fd9c9f;
+
+  --ifm-color-emphasis-0: var(--ifm-color-gray-0);
+  --ifm-color-emphasis-100: var(--ifm-color-gray-100);
+  --ifm-color-emphasis-200: var(--ifm-color-gray-200);
+  --ifm-color-emphasis-300: var(--ifm-color-gray-300);
+  --ifm-color-emphasis-400: var(--ifm-color-gray-400);
+  --ifm-color-emphasis-500: var(--ifm-color-gray-500);
+  --ifm-color-emphasis-600: var(--ifm-color-gray-600);
+  --ifm-color-emphasis-700: var(--ifm-color-gray-700);
+  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
+  --ifm-color-emphasis-900: var(--ifm-color-gray-900);
+  --ifm-color-emphasis-1000: var(--ifm-color-gray-1000);
+
+  --ifm-color-note-background: #fafafa;
+  --ifm-color-note-foreground: #474747;
+  --ifm-color-note-highlight: rgba(134, 134, 135, 0.15);
+  --ifm-color-note-border: var(--ifm-color-emphasis-600);
+  --ifm-color-note-icon: var(--ifm-color-emphasis-900);
+
+  --ifm-color-success-background: #e6f6e6;
+  --ifm-color-success-foreground: #003100;
+  --ifm-color-success-highlight: rgba(0, 164, 0, 0.15);
+  --ifm-color-success-border: var(--ifm-color-success-dark);
+  --ifm-color-success-icon: var(--ifm-color-success-darkest);
+
+  --ifm-color-info-background: #eef9fd;
+  --ifm-color-info-foreground: #193c47;
+  --ifm-color-info-highlight: rgba(84, 199, 236, 0.15);
+  --ifm-color-info-border: var(--ifm-color-info-dark);
+  --ifm-color-info-icon: var(--ifm-color-info-darkest);
+
+  --ifm-color-warning-background: #fff8e6;
+  --ifm-color-warning-foreground: #4d3800;
+  --ifm-color-warning-highlight: rgba(255, 186, 0, 0.15);
+  --ifm-color-warning-border: var(--ifm-color-warning-dark);
+  --ifm-color-warning-icon: var(--ifm-color-warning-darkest);
+
+  --ifm-color-danger-background: #ffebec;
+  --ifm-color-danger-foreground: #4b1113;
+  --ifm-color-danger-highlight: rgba(250, 56, 62, 0.15);
+  --ifm-color-danger-border: var(--ifm-color-danger-darker);
+  --ifm-color-danger-icon: var(--ifm-color-danger-darkest);
+
+  padding: 1em 1em 0.8em;
+  margin: 1rem 0;
+
+  border-radius: 0.375em;
+  border: 0px solid;
+  border-left-width: 0.3em;
+
+  box-shadow: var(--ifm-global-shadow-lw);
+  color: var(--color-admonition);
+  border-color: var(--color-admonition-border);
+  background-color: var(--color-admonition-background);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.admonition-container.note {
+  --color-admonition: var(--ifm-color-note-foreground);
+  --color-admonition-border: var(--ifm-color-note-border);
+  --color-admonition-background: var(--ifm-color-note-background);
+  --color-admonition-icon: var(--ifm-color-note-icon);
+  --color-admonition-highlight: var(--ifm-color-note-highlight);
+}
+
+.admonition-container.tip {
+  --color-admonition: var(--ifm-color-success-foreground);
+  --color-admonition-border: var(--ifm-color-success-border);
+  --color-admonition-background: var(--ifm-color-success-background);
+  --color-admonition-icon: var(--ifm-color-success-icon);
+  --color-admonition-highlight: var(--ifm-color-success-highlight);
+}
+
+.admonition-container.info {
+  --color-admonition: var(--ifm-color-info-foreground);
+  --color-admonition-border: var(--ifm-color-info-border);
+  --color-admonition-background: var(--ifm-color-info-background);
+  --color-admonition-icon: var(--ifm-color-info-icon);
+  --color-admonition-highlight: var(--ifm-color-info-highlight);
+}
+
+.admonition-container.warning {
+  --color-admonition: var(--ifm-color-warning-foreground);
+  --color-admonition-border: var(--ifm-color-warning-border);
+  --color-admonition-background: var(--ifm-color-warning-background);
+  --color-admonition-icon: var(--ifm-color-warning-icon);
+  --color-admonition-highlight: var(--ifm-color-warning-highlight);
+}
+
+.admonition-container.danger {
+  --color-admonition: var(--ifm-color-danger-foreground);
+  --color-admonition-border: var(--ifm-color-danger-border);
+  --color-admonition-background: var(--ifm-color-danger-background);
+  --color-admonition-icon: var(--ifm-color-danger-icon);
+  --color-admonition-highlight: var(--ifm-color-danger-highlight);
+}
+
+.admonition-title {
+  margin-bottom: 0.4rem;
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--color-text-default);
+
+  display: flex;
+  align-items: center;
+}
+
+.admonition-title svg {
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.5em;
+  fill: var(--color-admonition-icon);
+}
+
+.admonition-content p {
+  color: var(--color-text-strong);
+}
+
+.admonition-content code {
+  background-color: var(--color-admonition-highlight) !important;
+}
+
+.admonition-content a {
+  color: var(--color-admonition);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-underline-position: under;
+}
+
+.admonition-content a:hover {
+  color: var(--color-admonition);
+}

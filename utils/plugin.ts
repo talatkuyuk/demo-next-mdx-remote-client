@@ -4,32 +4,57 @@ import { visit, CONTINUE } from "unist-util-visit";
 import GithubSlugger from "github-slugger";
 import { toString } from "mdast-util-to-string";
 
+export type HeadingParents =
+  | "root"
+  | "blockquote"
+  | "footnoteDefinition"
+  | "listItem"
+  | "container"
+  | "mdxJsxFlowElement";
+
+export type HeadingDepths = 1 | 2 | 3 | 4 | 5 | 6;
+
 export type TocItem = {
   value: string;
   url: string;
-  depth: 1 | 2 | 3 | 4 | 5 | 6;
-  numbering: number[];
-  parent:
-    | "root"
-    | "blockquote"
-    | "footnoteDefinition"
-    | "listItem"
-    | "mdxJsxFlowElement";
+  depth: HeadingDepths;
+  numbering: HeadingDepths[];
+  parent: HeadingParents;
   data?: Record<string, unknown>;
 };
 
+/**
+ * tocName (default: "toc") - the key name which is attached into vfile.data
+ * tocRef (default: []) — another way of exposing the tocItems
+ * maxDepth (default: 6) — max heading depth to include in the table of contents; this is inclusive: when set to 3, level three headings are included
+ * exclude — headings to skip, wrapped in new RegExp('^(' + value + ')$', 'i'); any heading matching this expression will not be present in the table of contents
+ * skipLevels (default: [1]) — disallowed heading levels, by default the article h1 is not expected to be in the TOC
+ * skipParents (default: []) — disallow headings to be children of certain node types, (the "root" can not skipped)
+ * prefix - the text that will be attached to headings as prefix, like "text-prefix-"
+ * fallback - It is a fallback function to take the array of toc items as an argument
+ */
 export type FlexibleTocOptions = {
   tocName?: string;
   tocRef?: TocItem[];
-  levels?: number[];
+  maxDepth?: HeadingDepths;
+  exclude?: string | string[];
+  skipLevels?: HeadingDepths[];
+  skipParents?: Exclude<HeadingParents, "root">[];
   prefix?: string;
   fallback?: (toc: TocItem[]) => undefined;
+};
+
+type PartiallyRequiredFlexibleTocOptions = Required<FlexibleTocOptions> & {
+  prefix?: FlexibleTocOptions["prefix"];
+  fallback?: FlexibleTocOptions["fallback"];
 };
 
 const DEFAULT_SETTINGS: FlexibleTocOptions = {
   tocName: "toc",
   tocRef: [],
-  levels: [2, 3, 4, 5, 6], // level-1 is excluded by default since the article h1 is not expected to be in the Toc
+  maxDepth: 6,
+  skipLevels: [1],
+  skipParents: [],
 };
 
 /**
@@ -46,21 +71,27 @@ function addNumbering(arr: TocItem[]) {
     const tocItem = arr[i];
     const depth = tocItem.depth;
 
-    let numbering: number[] = [];
+    let numbering: HeadingDepths[] = [];
 
     const prevObj = i > 0 ? arr[i - 1] : undefined;
-    const prevLevel = prevObj ? prevObj.numbering : undefined;
     const prevDepth = prevObj ? prevObj.depth : undefined;
+    const prevNumbering = prevObj ? prevObj.numbering : undefined;
 
-    if (!prevLevel || prevDepth === undefined) {
+    if (!prevNumbering || !prevDepth) {
       numbering = Array.from({ length: depth }, () => 1);
     } else if (depth === prevDepth) {
-      numbering = [...prevLevel];
+      numbering = [...prevNumbering];
       numbering[depth - 1]++;
     } else if (depth > prevDepth) {
-      numbering = [...prevLevel, 1];
+      numbering = [
+        ...prevNumbering,
+        ...(Array.from(
+          { length: depth - prevDepth },
+          () => 1
+        ) as HeadingDepths[]),
+      ]; // tricky here, if depth is more bigger than prevDepth, put more 1 inside the array
     } else if (depth < prevDepth) {
-      numbering = prevLevel.slice(0, depth);
+      numbering = prevNumbering.slice(0, depth);
       numbering[depth - 1]++;
     }
 
@@ -69,24 +100,46 @@ function addNumbering(arr: TocItem[]) {
 }
 
 const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
-  const settings = Object.assign({}, DEFAULT_SETTINGS, options);
+  const settings = Object.assign(
+    {},
+    DEFAULT_SETTINGS,
+    options
+  ) as PartiallyRequiredFlexibleTocOptions;
+
+  const exludeRegexFilter = settings.exclude
+    ? Array.isArray(settings.exclude)
+      ? new RegExp(settings.exclude.join("|"), "i")
+      : new RegExp(settings.exclude, "i")
+    : new RegExp("(?!.*)");
 
   return (tree, file) => {
     const slugger = new GithubSlugger();
     const tocItems: TocItem[] = [];
 
     visit(tree, "heading", (_node, _index, _parent) => {
-      if (!_index || !_parent) return;
-
-      if (!settings.levels!.includes(_node.depth)) return CONTINUE;
+      if (!_parent) return;
 
       const depth = _node.depth;
       const value = toString(_node, { includeImageAlt: false });
       const url = `#${settings.prefix ?? ""}${slugger.slug(value)}`;
       const parent = _parent.type;
 
+      // maxDepth check
+      if (depth > settings.maxDepth) return CONTINUE;
+
+      // skipLevels check
+      if (settings.skipLevels.includes(depth)) return CONTINUE;
+
+      // skipParents check
+      if (parent !== "root" && settings.skipParents.includes(parent)) {
+        return CONTINUE;
+      }
+
+      // exclude check
+      if (exludeRegexFilter.test(value)) return CONTINUE;
+
       // Other remark plugins can store custom data in node.data.hProperties
-      // I excluded node.data.hName and node.data.hChildren since not related with toc
+      // I omitted node.data.hName and node.data.hChildren since not related with toc
       const data = _node.data?.hProperties
         ? { ..._node.data.hProperties }
         : undefined;

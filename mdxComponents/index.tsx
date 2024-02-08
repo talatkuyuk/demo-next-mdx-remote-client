@@ -2,15 +2,17 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { type MDXComponents } from "next-mdx-remote-server/rsc";
 
+import Button from "./Button";
 import CountButton from "./CountButton";
 import Hello from "./Hello";
 import ContextConsumer from "./ContextConsumer";
-import CustomBlockQuote, { default as blockquote } from "./CustomBlockQuote";
-import Button from "./Button";
 import Toc from "./Toc";
+import BlockQuote, { default as blockquote } from "./BlockQuote";
+import Admonition, { admonition } from "./Admonition";
 // import CustomImage from "./CustomImage";
 
 export const mdxComponents: MDXComponents = {
+  Button,
   CountButton,
   Hello,
   strong: (props: React.HTMLAttributes<HTMLElement>) => (
@@ -21,10 +23,11 @@ export const mdxComponents: MDXComponents = {
     return <div id="mdx-layout">{props.children}</div>;
   },
   Image, // Image: CustomImage,
-  blockquote,
-  CustomBlockQuote,
-  Button,
   Toc,
+  blockquote,
+  BlockQuote,
+  admonition,
+  Admonition,
 };
 
 export const mdxComponentsWithContext = {

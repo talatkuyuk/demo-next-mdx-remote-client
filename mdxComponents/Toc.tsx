@@ -1,55 +1,63 @@
 "use client";
 
 import { clsx } from "clsx";
-import { type TocItem } from "../utils/plugin";
+import type { TocItem, HeadingDepths, HeadingParents } from "../utils/plugin";
 
 import styles from "./Toc.module.css";
 
-// toc - an array of Table of Content's items provided by the remark plugin "remark-flexible-toc"
-// maxDepth (default: 6) — max heading depth to include in the table of contents; this is inclusive: when set to 3, level three headings are included (those with three hashes, ###)
-// indented (default: false) — whether to add indent to list items according to heading levels, otherwise not added
-// ordered (default: false) — whether to add numbering to list items as an ordered list, otherwise not added
+// toc - an array of table of contents items provided by the remark plugin "remark-flexible-toc"
+// maxDepth (default: 6) — max heading depth to include in the table of contents; this is inclusive: when set to 3, level three headings are included
+// indented (default: false) — whether to add indent to list items according to heading levels
+// ordered (default: false) — whether to add numbering to list items as an ordered list
 // tight (default: false) — whether to compile list items tightly, otherwise space is added around items
 // exclude — headings to skip, wrapped in new RegExp('^(' + value + ')$', 'i'); any heading matching this expression will not be present in the table of contents
-// skip — disallow headings to be children of certain node types,(if the parent is "root", it is not skipped)
+// skipLevels (default: [1]) — disallowed heading levels, by default the article h1 is not expected to be in the TOC
+// skipParents — disallow headings to be children of certain node types,(if the parent is "root", it is not skipped)
 type Props = {
   toc: TocItem[];
-  maxDepth?: number;
+  maxDepth?: HeadingDepths;
   indented?: boolean;
   ordered?: boolean;
   tight?: boolean;
   exclude?: string | string[];
-  skip?: Array<Exclude<TocItem["parent"], "root">>;
+  skipLevels?: HeadingDepths[];
+  skipParents?: Exclude<HeadingParents, "root">[];
 };
 
 const Toc = ({
   toc,
   maxDepth = 6,
-  ordered,
-  indented,
-  tight,
-  skip = [],
+  ordered = false,
+  indented = false,
+  tight = false,
   exclude,
+  skipLevels = [1],
+  skipParents = [],
 }: Props) => {
   if (!toc) return null;
 
-  // ********* filtering **************
-  const exludeRE = exclude
+  // ********* filters **************
+  const exludeRegexFilter = exclude
     ? Array.isArray(exclude)
       ? new RegExp(exclude.join("|"), "i")
       : new RegExp(exclude, "i")
     : new RegExp("(?!.*)");
 
-  const skipFilter = (parent: TocItem["parent"]): boolean =>
-    parent !== "root" && skip.includes(parent);
+  const skipLevelsFilter = (depth: TocItem["depth"]): boolean =>
+    skipLevels.includes(depth);
 
-  const maxDepthFilter = (depth: number): boolean => depth <= maxDepth;
+  const skipParentsFilter = (parent: TocItem["parent"]): boolean =>
+    parent !== "root" && skipParents.includes(parent);
+
+  const maxDepthFilter = (depth: TocItem["depth"]): boolean => depth > maxDepth;
+  // ********************************
 
   const filteredToc = toc.filter(
     (heading) =>
-      maxDepthFilter(heading.depth) &&
-      !skipFilter(heading.parent) &&
-      !exludeRE.test(heading.value)
+      !maxDepthFilter(heading.depth) &&
+      !skipLevelsFilter(heading.depth) &&
+      !skipParentsFilter(heading.parent) &&
+      !exludeRegexFilter.test(heading.value)
   );
 
   return (
@@ -76,7 +84,7 @@ const Toc = ({
               <div className={`h${heading.depth}`}>
                 {ordered ? (
                   <span className={styles["numbering"]}>
-                    {heading.numbering.slice(1).join(".")}
+                    {heading.numbering.slice(1).join(".")}.
                   </span>
                 ) : null}
                 <span className={styles["heading"]}>{heading.value}</span>

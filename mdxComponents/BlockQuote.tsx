@@ -5,9 +5,6 @@ type BlockquoteProps = DetailedHTMLProps<
   HTMLQuoteElement
 >;
 
-export default function CustomBlockQuote({
-  children,
-  ...props
-}: BlockquoteProps) {
+export default function BlockQuote({ children, ...props }: BlockquoteProps) {
   return <blockquote {...props}>{children}</blockquote>;
 }
