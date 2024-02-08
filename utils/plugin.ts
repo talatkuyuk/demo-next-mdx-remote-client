@@ -16,7 +16,7 @@ export type HeadingDepths = 1 | 2 | 3 | 4 | 5 | 6;
 
 export type TocItem = {
   value: string;
-  url: string;
+  href: string;
   depth: HeadingDepths;
   numbering: HeadingDepths[];
   parent: HeadingParents;
@@ -41,10 +41,10 @@ export type FlexibleTocOptions = {
   skipLevels?: HeadingDepths[];
   skipParents?: Exclude<HeadingParents, "root">[];
   prefix?: string;
-  fallback?: (toc: TocItem[]) => undefined;
+  fallback?: <T = undefined>(toc: TocItem[]) => T;
 };
 
-type PartiallyRequiredFlexibleTocOptions = Required<FlexibleTocOptions> & {
+type RequiredFlexibleTocOptions = Required<FlexibleTocOptions> & {
   prefix?: FlexibleTocOptions["prefix"];
   fallback?: FlexibleTocOptions["fallback"];
 };
@@ -104,7 +104,7 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
     {},
     DEFAULT_SETTINGS,
     options
-  ) as PartiallyRequiredFlexibleTocOptions;
+  ) as RequiredFlexibleTocOptions;
 
   const exludeRegexFilter = settings.exclude
     ? Array.isArray(settings.exclude)
@@ -121,7 +121,7 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
 
       const depth = _node.depth;
       const value = toString(_node, { includeImageAlt: false });
-      const url = `#${settings.prefix ?? ""}${slugger.slug(value)}`;
+      const href = `#${settings.prefix ?? ""}${slugger.slug(value)}`;
       const parent = _parent.type;
 
       // maxDepth check
@@ -146,7 +146,7 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
 
       tocItems.push({
         value,
-        url,
+        href,
         depth,
         numbering: [],
         parent,

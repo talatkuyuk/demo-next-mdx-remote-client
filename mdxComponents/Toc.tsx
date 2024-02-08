@@ -80,7 +80,7 @@ const Toc = ({
               tight && styles["tight"]
             )}
           >
-            <a href={heading.url}>
+            <a href={heading.href}>
               <div className={`h${heading.depth}`}>
                 {ordered ? (
                   <span className={styles["numbering"]}>
@@ -88,7 +88,7 @@ const Toc = ({
                   </span>
                 ) : null}
                 <span className={styles["heading"]}>{heading.value}</span>
-                <span className={styles["href"]}>{heading.url}</span>
+                <span className={styles["href"]}>{heading.href}</span>
               </div>
             </a>
           </li>
