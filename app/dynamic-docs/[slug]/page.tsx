@@ -8,7 +8,7 @@ import {
 
 import { getMarkdownFile, getMarkdownFiles, RE } from "@/utils/file";
 import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
-import { getRandomInteger } from "@/utils";
+import { getRandomInteger, replaceLastDotWithDash } from "@/utils";
 import type { Frontmatter } from "@/types";
 import { mdxComponents as components } from "@/mdxComponents";
 
@@ -31,7 +31,9 @@ export async function generateStaticParams() {
     (filename) => !filename.includes("context") && !filename.includes("error")
   );
 
-  return filteredFiles.map((filename) => ({ slug: filename.replace(RE, "") }));
+  return filteredFiles.map((filename) => ({
+    slug: replaceLastDotWithDash(filename),
+  }));
 }
 
 export default async function Post({ params }: { params: { slug: string } }) {

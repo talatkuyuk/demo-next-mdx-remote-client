@@ -10,7 +10,7 @@ import {
 import type { Frontmatter } from "@/types";
 import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
 import { RE, getMarkdownFile, getMarkdownFiles } from "@/utils/file";
-import { getRandomInteger } from "@/utils";
+import { getRandomInteger, replaceLastDotWithDash } from "@/utils";
 import DemoStateProvider from "@/contexts/DemoStateProvider";
 import { mdxComponentsWithContext as components } from "@/mdxComponents";
 
@@ -89,7 +89,7 @@ export async function getStaticPaths() {
   );
 
   const paths = filteredFiles.map((filename) => ({
-    params: { slug: filename.replace(RE, "") },
+    params: { slug: replaceLastDotWithDash(filename) },
   }));
 
   return { paths, fallback: false };

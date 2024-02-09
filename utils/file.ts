@@ -3,8 +3,14 @@ import path from "path";
 import { getFrontmatter } from "next-mdx-remote-client/utils";
 
 import { Frontmatter, FrontmatterWithSlug } from "@/types";
+import {
+  getMarkdownExtension,
+  replaceLastDashWithDot,
+  replaceLastDotWithDash,
+} from ".";
 
 export const RE = /\.mdx?$/u; // Only .md(x) files
+// text.replace(RE, "")
 
 export const getSource = async (filename: string): Promise<string> => {
   const sourcePath = path.join(process.cwd(), "data", filename);
@@ -34,22 +40,18 @@ export const getMarkdownFile = async (
     }
   | undefined
 > => {
-  const mdxFullPath = path.join(process.cwd(), "data", `${slug}.mdx`);
-  const mdFullPath = path.join(process.cwd(), "data", `${slug}.md`);
+  const filename = replaceLastDashWithDot(slug);
+  const fullPath = path.join(process.cwd(), "data", filename);
 
-  // mdx takes precedence
-  if (fs.existsSync(mdxFullPath)) {
-    const source = await getSource(`${slug}.mdx`);
+  if (fs.existsSync(fullPath)) {
+    const source = await getSource(filename);
     const frontmatter = getFrontmatter<Frontmatter>(source).frontmatter;
 
-    return { source, format: "mdx", frontmatter };
-  }
-
-  if (fs.existsSync(mdFullPath)) {
-    const source = await getSource(`${slug}.md`);
-    const frontmatter = getFrontmatter<Frontmatter>(source).frontmatter;
-
-    return { source, format: "md", frontmatter };
+    return {
+      source,
+      format: getMarkdownExtension(filename) ?? "md",
+      frontmatter,
+    };
   }
 };
 
@@ -62,7 +64,7 @@ export const getFrontmatterAndSlug = (
 
   const frontmatterWithSlug: FrontmatterWithSlug = {
     ...frontmatter,
-    slug: filename.replace(RE, ""),
+    slug: replaceLastDotWithDash(filename),
   };
 
   return frontmatterWithSlug;
