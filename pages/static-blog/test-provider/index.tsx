@@ -27,8 +27,8 @@ export default function TestPage({
   // since we didn't provide the components, it is not wrapped with the <MDXProvider />
   const { content, mod } = hydrate(mdxSource);
 
-  // "It has been proven that the variables exported from the mdx document are exported completely and correctly."
-  const proofForExports =
+  // "It has been proven that the exports from the mdx are validated."
+  const proofForValidatedExports =
     (mod as any)?.factorial?.((mod as any)?.num) === 720
       ? "validated exports"
       : "invalidated exports";
@@ -48,7 +48,7 @@ export default function TestPage({
                   with using <strong>hydrate</strong>
                 </mark>
                 <span className="proof-for-exports">
-                  <strong>{proofForExports}</strong>
+                  <strong>{proofForValidatedExports}</strong>
                 </span>
               </td>
               <td>

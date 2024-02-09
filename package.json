@@ -13,7 +13,7 @@
     "clsx": "^2.1.0",
     "github-slugger": "^2.0.0",
     "next": "^14.1.0",
-    "next-mdx-remote-client": "file:next-mdx-remote-client-0.0.1.tgz",
+    "next-mdx-remote-client": "file:next-mdx-remote-client-0.0.2.tgz",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-spinners": "^0.13.8",

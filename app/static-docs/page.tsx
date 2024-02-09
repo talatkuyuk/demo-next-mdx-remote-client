@@ -15,7 +15,17 @@ export default async function Docs() {
           <span>(Author: foofoo)</span>
         </li>
         <li>
-          👉 <Link href="/static-docs/test-toc">Test Basic with Toc</Link>{" "}
+          👉{" "}
+          <Link href="/static-docs/test-toc">
+            Test Basic with Toc (Method-1)
+          </Link>{" "}
+          <span>(Author: toctoc)</span>
+        </li>
+        <li>
+          👉{" "}
+          <Link href="/static-docs/test-toc2">
+            Test Basic with Toc (Method-2)
+          </Link>{" "}
           <span>(Author: toctoc)</span>
         </li>
         <li>
@@ -23,7 +33,10 @@ export default async function Docs() {
           <span>(Author: errorr)</span>
         </li>
         <li>
-          👉 <Link href="/static-docs/test-esm">Test ESM</Link>{" "}
+          👉{" "}
+          <Link href="/static-docs/test-esm">
+            Test Enabling Imports/Exports
+          </Link>{" "}
           <span>(Author: esmesm)</span>
         </li>
       </ul>

@@ -30,7 +30,11 @@ export default function TestPage() {
       <Head>
         <title>{frontmatter.title}</title>
       </Head>
-      <MDXClientComponent body={data.file} components={components} />
+      <MDXClientComponent
+        body={data.file}
+        frontmatter={frontmatter}
+        components={components}
+      />
     </>
   );
 }

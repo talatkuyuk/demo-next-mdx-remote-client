@@ -43,6 +43,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
   const readingTime = `${getRandomInteger(4, 10)} min.`;
 
   const options: EvaluateOptions = {
+    disableExports: frontmatter?.disableExports,
     enableImports: frontmatter?.enableImports,
     parseFrontmatter: true,
     scope: { readingTime, props: { foo: "{props.foo} is working." } },
@@ -64,11 +65,17 @@ export default async function Post({ params }: { params: { slug: string } }) {
     components,
   });
 
-  // "It has been proven that the variables exported from the mdx document are exported completely and correctly."
-  const proofForExports =
+  // "It has been proven that the exports from the mdx are validated."
+  const proofForValidatedExports =
     (mod as any)?.factorial?.((mod as any)?.num) === 720
       ? "validated exports"
       : "invalidated exports";
+
+  // "It has been proven that all exports in the mdx document are removed."
+  const proofForNoAnyExports =
+    Object.keys(mod).length === 0
+      ? "all exports removed"
+      : "invalidated removed exports";
 
   return (
     <table className="result">
@@ -79,7 +86,11 @@ export default async function Post({ params }: { params: { slug: string } }) {
               with using <strong>evaluate</strong>
             </mark>
             <span className="proof-for-exports">
-              <strong>{proofForExports}</strong>
+              <strong>
+                {frontmatter?.disableExports
+                  ? proofForNoAnyExports
+                  : proofForValidatedExports}
+              </strong>
             </span>
           </td>
           <td>

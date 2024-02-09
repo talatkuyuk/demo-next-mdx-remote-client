@@ -161,6 +161,10 @@ const RemarkFlexibleToc: Plugin<[FlexibleTocOptions?], Root> = (options) => {
 
     // method - 2 for exposing the data
     if (options?.tocRef) {
+      // to prevent dublication if the plugin is called more than once in the plugin chain.
+      // in case the same object reference is supplied
+      settings.tocRef.length = 0;
+
       tocItems.forEach((tocItem) => {
         settings.tocRef?.push(tocItem);
       });

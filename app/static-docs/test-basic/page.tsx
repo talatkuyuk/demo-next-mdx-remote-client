@@ -32,6 +32,7 @@ export default async function Page() {
   const readingTime = `${getRandomInteger(4, 10)} min.`;
 
   const options: EvaluateOptions = {
+    disableExports: true,
     parseFrontmatter: true,
     scope: { readingTime, props: { foo: "{props.foo} is working." } },
     mdxOptions: {
@@ -49,11 +50,11 @@ export default async function Page() {
     options,
   });
 
-  // "It has been proven that the variables exported from the mdx document are exported completely and correctly."
-  const proofForExports =
-    (mod as any)?.factorial?.((mod as any)?.num) === 720
-      ? "validated exports"
-      : "invalidated exports";
+  // "It has been proven that all exports in the mdx document are removed."
+  const proofForNoAnyExports =
+    Object.keys(mod).length === 0
+      ? "all exports removed"
+      : "invalidated removed exports";
 
   return (
     <table className="result">
@@ -64,7 +65,7 @@ export default async function Page() {
               with using <strong>evaluate</strong>
             </mark>
             <span className="proof-for-exports">
-              <strong>{proofForExports}</strong>
+              <strong>{proofForNoAnyExports}</strong>
             </span>
           </td>
           <td>

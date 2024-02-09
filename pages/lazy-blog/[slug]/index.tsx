@@ -24,11 +24,17 @@ export default function TestPage({
 }) {
   const { content, mod } = hydrateLazy({ ...mdxSource, components });
 
-  // "It has been proven that the variables exported from the mdx document are exported completely and correctly."
-  const proofForExports =
+  // "It has been proven that the exports from the mdx are validated."
+  const proofForValidatedExports =
     (mod as any)?.factorial?.((mod as any)?.num) === 720
       ? "validated exports"
       : "invalidated exports";
+
+  // "It has been proven that all exports in the mdx document are removed."
+  const proofForNoAnyExports =
+    Object.keys(mod).length === 0
+      ? "all exports removed"
+      : "invalidated removed exports";
 
   return (
     <>
@@ -43,7 +49,12 @@ export default function TestPage({
                 with using <strong>hydrate</strong>
               </mark>
               <span className="proof-for-exports">
-                <strong>{proofForExports}</strong>
+                <strong>
+                  {" "}
+                  {mdxSource.frontmatter.disableExports
+                    ? proofForNoAnyExports
+                    : proofForValidatedExports}
+                </strong>
               </span>
             </td>
             <td>
@@ -99,6 +110,7 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
   const readingTime = `${getRandomInteger(4, 10)} min.`;
 
   const options: SerializeOptions = {
+    disableExports: frontmatter?.disableExports,
     parseFrontmatter: true,
     scope: { readingTime, props: { foo: "{props.foo} is working." } },
     vfileDataIntoScope: ["toc"], // the "remark-flexible-toc" plugin produces vfile.data.toc

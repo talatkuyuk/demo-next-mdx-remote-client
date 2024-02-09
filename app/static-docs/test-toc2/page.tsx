@@ -7,11 +7,12 @@ import {
   type EvaluateOptions,
 } from "next-mdx-remote-client/rsc";
 
-import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
+import { getRemarkPlugins, recmaPlugins, rehypePlugins } from "@/utils/mdx";
 import { getSource } from "@/utils/file";
 import { getRandomInteger } from "@/utils";
 import type { Frontmatter } from "@/types";
 import { mdxComponents as components } from "@/mdxComponents";
+import { type TocItem } from "@/utils/plugin";
 
 export async function generateMetadata(): Promise<Metadata> {
   const source = await getSource("test-toc.mdx");
@@ -33,13 +34,15 @@ export default async function Page() {
 
   const readingTime = `${getRandomInteger(4, 10)} min.`;
 
-  // simple way to get the table of content via "vfileDataIntoScope"
+  // get the table of content (toc) in a different way instead of vfileDataIntoScope: ["toc"]
+  const toc: TocItem[] = [];
+
   const options: EvaluateOptions = {
     parseFrontmatter: true,
-    scope: { readingTime, props: { foo: "{props.foo} is working." } },
-    vfileDataIntoScope: ["toc"], // the "remark-flexible-toc" plugin produces vfile.data.toc
+    // here, we insert the "toc" inside the "scope" ourselves
+    scope: { toc, readingTime, props: { foo: "{props.foo} is working." } },
     mdxOptions: {
-      remarkPlugins,
+      remarkPlugins: getRemarkPlugins(toc), // the "remark-flexible-toc" plugin mutates the "toc"
       rehypePlugins,
       recmaPlugins,
     },

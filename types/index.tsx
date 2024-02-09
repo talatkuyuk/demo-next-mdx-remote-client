@@ -1,6 +1,7 @@
 export type Frontmatter = {
   title: string;
   author: string;
+  disableExports: boolean;
   enableImports: boolean;
 };
 

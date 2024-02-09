@@ -27,7 +27,17 @@ export default function StaticBlog() {
             <span>(Author: errorr)</span>
           </li>
           <li>
-            👉 <Link href="/static-blog/test-toc">Test Basic with Toc</Link>{" "}
+            👉{" "}
+            <Link href="/static-blog/test-toc">
+              Test Basic with Toc (Method-1)
+            </Link>{" "}
+            <span>(Author: toctoc)</span>
+          </li>
+          <li>
+            👉{" "}
+            <Link href="/static-blog/test-toc2">
+              Test Basic with Toc (Method-2)
+            </Link>{" "}
             <span>(Author: toctoc)</span>
           </li>
           <li>
