@@ -9,7 +9,7 @@ const Bar = ({ enabled }) => {
     },
     `"Imports" is ${
       enabled ? "enabled" : "disabled"
-    }, so I able to say say HELLO from imported <Bar /> component.`
+    }, so I am able to say HELLO from imported <Bar /> component.`
   );
 };
 

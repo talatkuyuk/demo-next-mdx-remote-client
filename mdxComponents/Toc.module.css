@@ -45,15 +45,15 @@
 }
 
 .toc-list li.h4indent {
-  margin-left: 1.7em;
+  margin-left: 2em;
 }
 
 .toc-list li.h5indent {
-  margin-left: 2.3em;
+  margin-left: 3em;
 }
 
 .toc-list li.h6indent {
-  margin-left: 3em;
+  margin-left: 4em;
 }
 
 /* first and last li when mobile */

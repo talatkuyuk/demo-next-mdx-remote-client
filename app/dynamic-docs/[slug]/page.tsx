@@ -4,7 +4,7 @@ import {
   evaluate,
   MDXRemote,
   type EvaluateOptions,
-} from "next-mdx-remote-server/rsc";
+} from "next-mdx-remote-client/rsc";
 
 import { getMarkdownFile, getMarkdownFiles, RE } from "@/utils/file";
 import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";

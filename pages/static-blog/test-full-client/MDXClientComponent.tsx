@@ -5,7 +5,7 @@ import {
   MDXClient,
   type SerializeResult,
   type MDXComponents,
-} from "next-mdx-remote-server/csr";
+} from "next-mdx-remote-client/csr";
 
 import { getRandomInteger } from "@/utils";
 import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
@@ -44,11 +44,9 @@ const MDXClientComponent = ({
     });
   }, [body]);
 
-  const { compiledSource, ...options } = mdxSource ?? {};
+  if (!mdxSource) return <p>Loading the article...</p>;
 
-  if (!compiledSource) return <p>Loading the article...</p>;
-
-  const { content, mod } = hydrate({ compiledSource, options, components });
+  const { content, mod } = hydrate({ ...mdxSource, components });
 
   // "It has been proven that the variables exported from the mdx document are exported completely and correctly."
   const proofForExports =
@@ -82,11 +80,7 @@ const MDXClientComponent = ({
           </td>
           <td>
             <DemoStateProvider>
-              <MDXClient
-                compiledSource={compiledSource}
-                options={options}
-                components={components}
-              />
+              <MDXClient {...mdxSource} components={components} />
             </DemoStateProvider>
           </td>
         </tr>

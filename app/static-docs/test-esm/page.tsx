@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import { type Metadata } from "next";
-import { getFrontmatter } from "next-mdx-remote-server/utils";
+import { getFrontmatter } from "next-mdx-remote-client/utils";
 import {
   evaluate,
   MDXRemote,
   type EvaluateOptions,
-} from "next-mdx-remote-server/rsc";
+} from "next-mdx-remote-client/rsc";
 
 import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
 import { getSource } from "@/utils/file";

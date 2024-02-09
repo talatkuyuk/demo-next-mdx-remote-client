@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { getFrontmatter } from "next-mdx-remote-server/utils";
+import { getFrontmatter } from "next-mdx-remote-client/utils";
 
 import { Frontmatter, FrontmatterWithSlug } from "@/types";
 

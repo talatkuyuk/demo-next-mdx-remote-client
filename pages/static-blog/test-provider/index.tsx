@@ -6,7 +6,7 @@ import {
   MDXProvider,
   type SerializeOptions,
   type SerializeResult,
-} from "next-mdx-remote-server/csr";
+} from "next-mdx-remote-client/csr";
 
 import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
 import { mdxComponents as components } from "@/mdxComponents";
@@ -24,13 +24,8 @@ export default function TestPage({
 }: {
   mdxSource: SerializeResult<Frontmatter>;
 }) {
-  const { compiledSource, ...options } = mdxSource;
-
-  // since we didn't provide the components, it does not wrap with the <MDXProvider />
-  const { content, mod } = hydrate({
-    compiledSource,
-    options,
-  });
+  // since we didn't provide the components, it is not wrapped with the <MDXProvider />
+  const { content, mod } = hydrate(mdxSource);
 
   // "It has been proven that the variables exported from the mdx document are exported completely and correctly."
   const proofForExports =
@@ -67,8 +62,8 @@ export default function TestPage({
             <tr>
               <td>{content}</td>
               <td>
-                {/* since we didn't provide the components, it does not wrap with the <MDXProvider /> */}
-                <MDXClient compiledSource={compiledSource} options={options} />
+                {/* since we didn't provide the components, it is not wrapped with the <MDXProvider /> */}
+                <MDXClient {...mdxSource} />
               </td>
             </tr>
           </tbody>

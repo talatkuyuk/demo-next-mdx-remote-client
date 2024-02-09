@@ -1,12 +1,12 @@
 import { Suspense } from "react";
 import { type Metadata } from "next";
-import { getFrontmatter } from "next-mdx-remote-server/utils";
+import { getFrontmatter } from "next-mdx-remote-client/utils";
 import {
   evaluate,
   MDXRemote,
   type EvaluateOptions,
   MDXRemoteOptions,
-} from "next-mdx-remote-server/rsc";
+} from "next-mdx-remote-client/rsc";
 
 import {
   getRemarkPlugins,

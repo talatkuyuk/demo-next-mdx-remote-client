@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { type MDXComponents } from "next-mdx-remote-server/rsc";
+import { type MDXComponents } from "next-mdx-remote-client/rsc";
 
 import Button from "./Button";
 import CountButton from "./CountButton";

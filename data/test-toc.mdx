@@ -10,7 +10,7 @@ _Read in {readingTime}, written by **{frontmatter.author}**_
 
 # {frontmatter.title}
 
-<Toc toc={toc} ordered indented maxDepth={5} tight />
+<Toc toc={toc} ordered indented maxDepth={5} tight skipParents={["listItem", "container"]} />
 
 ## Section 1
 

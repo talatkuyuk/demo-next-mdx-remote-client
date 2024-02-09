@@ -5,7 +5,7 @@ import {
   MDXClient,
   type SerializeOptions,
   type SerializeResult,
-} from "next-mdx-remote-server/csr";
+} from "next-mdx-remote-client/csr";
 
 import { mdxComponentsWithContext as components } from "@/mdxComponents";
 import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
@@ -19,11 +19,8 @@ export default function TestPage({
 }: {
   mdxSource: SerializeResult<Frontmatter>;
 }) {
-  const { compiledSource, ...options } = mdxSource;
-
   const { content, mod } = hydrate({
-    compiledSource,
-    options,
+    ...mdxSource,
     components,
   });
 
@@ -63,11 +60,7 @@ export default function TestPage({
             </td>
             <td>
               <DemoStateProvider>
-                <MDXClient
-                  compiledSource={compiledSource}
-                  options={options}
-                  components={components}
-                />
+                <MDXClient {...mdxSource} components={components} />
               </DemoStateProvider>
             </td>
           </tr>
