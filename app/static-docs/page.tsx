@@ -37,7 +37,11 @@ export default async function Docs() {
           <Link href="/static-docs/test-esm">
             Test Enabling Imports/Exports
           </Link>{" "}
-          <span>(Author: esmesm)</span>
+          <span>(Author: impexp)</span>
+        </li>
+        <li>
+          👉 <Link href="/static-docs/test-markdown">Test Markdown File</Link>{" "}
+          <span>(Author: markmark)</span>
         </li>
       </ul>
     </div>

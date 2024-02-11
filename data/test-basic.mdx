@@ -6,7 +6,7 @@ disableExports: true
 
 import Bar from "../../../mdxComponents/Bar.mjs";
 
-_Read in {readingTime}, written by **{frontmatter.author}**_
+_Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link>_
 
 # {frontmatter.title}
 
@@ -47,7 +47,7 @@ You have to put an empty line after `export` statements in the mdx files.
 <p>Can you explain why the `exports` may cause harmful activities ?</p>
 <details>
   <summary>**The ways of removing exports**</summary>
-  + We can add `disableExports` option to remove all `export` statements (no option yet)
+  + You can use `disableExports: true` option to remove all `export` statements
   + You can use a custom `recma` plugin to remove all exports other than default,
   but the declarations stay and work in the mdx (needs a recma plugin)
   <p>_What do you think about that?_</p>
@@ -56,10 +56,10 @@ You have to put an empty line after `export` statements in the mdx files.
 
 :::tip Some Usefull Tips
 #### Recma Plugins
-Recma plugins are very usefull for solving specific mdx issues
+Recma plugins are very usefull for solving specific mdx issues.
 #### Table of Contents (TOC)
-Remark plugin `remark-flexible-toc` is the tool for creating TOC, especially for the mdx users.
-You can create a custom react component `<Toc toc={toc} />`, and use it in the mdx file.
+The remark plugin `remark-flexible-toc` is the tool for creating TOC, especially for the mdx users.
+You can create a custom `<Toc />` component, and use it in the mdx file like `<Toc toc={toc} />`.
 :::
 
 ### Heading For Code Highlighting
@@ -115,6 +115,7 @@ escape opening curlybraces "\{}"
 
 ~|> Centering **text** and **image** is very easy !
 ~|> <Image src="/images/cover.png" alt="cover" width={180} height={40} />
+~|> ![cover](/images/cover.png)
 
 #### SubHeading For Blockquates
 

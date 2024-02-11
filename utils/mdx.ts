@@ -1,4 +1,5 @@
 import { type PluggableList } from "unified";
+import { nodeTypes } from "@mdx-js/mdx";
 import remarkGfm from "remark-gfm";
 import remarkEmoji from "remark-emoji";
 import remarkFlexibleMarkers from "remark-flexible-markers";
@@ -7,6 +8,7 @@ import remarkFlexibleContainers, {
   type FlexibleContainerOptions,
 } from "remark-flexible-containers";
 import remarkFlexibleParagraphs from "remark-flexible-paragraphs";
+import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import recmaMdxEscapeMissingComponents from "recma-mdx-escape-missing-components";
@@ -54,7 +56,11 @@ export function getRemarkPlugins(toc: TocItem[]): PluggableList {
   ];
 }
 
-export const rehypePlugins: PluggableList = [rehypeHighlight, rehypeSlug];
+export const rehypePlugins: PluggableList = [
+  [rehypeRaw, { passThrough: nodeTypes }], // to allow HTML elements in "md" format, "passThrough" is for "mdx" works as well
+  rehypeHighlight,
+  rehypeSlug,
+];
 
 export const recmaPlugins: PluggableList = [
   [recmaMdxEscapeMissingComponents, ["Bar", "Toc"]],

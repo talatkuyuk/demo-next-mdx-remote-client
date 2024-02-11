@@ -1,15 +1,16 @@
 ---
-title: "Test MDX with Context Consumer"
-author: "barbar"
+title: "Test MDX Syntax in Markdown 'md' File"
+author: "markdown"
 ---
+::: note
+I kept the document structure **the same** to see how markdown behaves to javascript expressions in curlybraces `{}` and mdx syntax.
+:::
 
 import Bar from "../../../mdxComponents/Bar.mjs";
 
 _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link>_
 
 # {frontmatter.title}
-
-<Toc toc={toc} indented skipParents={["listItem", "container"]} />
 
 ## Section 1
 
@@ -18,8 +19,6 @@ _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link
 <Hello name={props.foo} />
 
 <CountButton />
-
-<ContextConsumer />
 
 <Bar enabled={frontmatter.enableImports} />
 
@@ -42,27 +41,28 @@ Some **markdown** _content_ :+1:
 
 #### SubHeading For Flexible Containers
 
-:::warning 
-You have to put an empty line after `export` statements in the mdx files.
+::: warning 
+All **JSX syntax** is omitted by the `remark` parser in markdown.
+
+All **javascript statements** in `{ }` are considered as just text in markdown.
 :::
 
-:::danger Exports May Be harmful
-<p>Can you explain why the `exports` may cause harmful activities ?</p>
+::: tip
+<span>The **markdown syntax** inside **a block-level `HTML` element** like `<p>`or `<details>` doesn't work in markdown, but works in **inline-level `HTML` elements** like `<span>`.</span>
+:::
+
+::: danger Pay Attention
+<p>The `allowDangerousHtml` is set to `true` by default in `mdx-js/mdx`. If the file is markdown "md" format, `html` elements are removed in case you don't use `rehype-raw` plugin.</p>
 <details>
-  <summary>**The ways of removing exports**</summary>
-  + You can use `disableExports: true` option to remove all `export` statements
-  + You can use a custom `recma` plugin to remove all exports other than default,
-  but the declarations stay and work in the mdx (needs a recma plugin)
-  <p>_What do you think about that?_</p>
+  <summary>**Markdown syntax doesn't work in details-summary**</summary>
+  + List item - 1
+  + List item - 2
+  <p>_The markdown list syntax also doesn't work !_</p>
 </details>
 :::
 
-:::tip Some Usefull Tips
-#### Recma Plugins
-Recma plugins are very usefull for solving specific mdx issues.
-#### Table of Contents (TOC)
-The remark plugin `remark-flexible-toc` is the tool for creating TOC, especially for the mdx users.
-You can create a custom `<Toc />` component, and use it in the mdx file like `<Toc toc={toc} />`.
+::: info Table of Contents (TOC)
+The remark plugin `remark-toc` is one of the tool for creating TOC inline in the markdown files.
 :::
 
 ### Heading For Code Highlighting
@@ -126,8 +126,28 @@ escape opening curlybraces "\{}"
 > <span>=g=blockquate markdown element==</span>
 
 <BlockQuote>
-  The `@import` is used to **import style rules** from other valid stylesheets.
-  <span>=g=custom blockquate element==</span>
-</BlockQuote>
+
+  All tag/component names are lowercased by `rehype-raw` via `parse5` parser. Luckily lowercased tag is a valid HTML tag as well. I put empty lines inside `<blockquote>` block-level HTML element in order markdown syntax works. <span>=g=blockquate html element==</span>
+
+</blockquote>
 
 export const num = 6;
+
+#### SubHeading For Mixing Markdown and HTML
+
+<div class="note">
+A mix of *markdown* and <em>HTML</em>.
+</div>
+
+<div class="note">
+  A mix of *markdown* and <em>HTML</em>.
+</div>
+
+<div class="note">A mix of *markdown* and <em>HTML</em>.</div>
+
+<div class="note">
+
+A mix of *markdown* and <em>HTML</em>.
+
+</div>
+

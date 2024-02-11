@@ -54,6 +54,10 @@ export default function StaticBlog() {
             </Link>{" "}
             <span>(Author: barbar)</span>
           </li>
+          <li>
+            👉 <Link href="/static-blog/test-markdown">Test Markdown File</Link>{" "}
+            <span>(Author: markmark)</span>
+          </li>
         </ul>
       </div>
     </>

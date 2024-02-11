@@ -9,6 +9,7 @@ import ContextConsumer from "./ContextConsumer";
 import Toc from "./Toc";
 import BlockQuote, { default as blockquote } from "./BlockQuote";
 import Admonition, { admonition } from "./Admonition";
+import Link from "next/link";
 // import CustomImage from "./CustomImage";
 
 export const mdxComponents: MDXComponents = {
@@ -23,6 +24,7 @@ export const mdxComponents: MDXComponents = {
     return <div id="mdx-layout">{props.children}</div>;
   },
   Image, // Image: CustomImage,
+  Link,
   Toc,
   blockquote,
   BlockQuote,
