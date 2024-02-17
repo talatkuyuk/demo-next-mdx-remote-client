@@ -1,82 +1,63 @@
 import Head from "next/head";
 import {
   serialize,
-  hydrateLazy,
-  MDXClientLazy,
   type SerializeOptions,
   type SerializeResult,
 } from "next-mdx-remote-client/csr";
 
 import type { Frontmatter } from "@/types";
-import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
-import { RE, getMarkdownFile, getMarkdownFiles } from "@/utils/file";
+import {
+  getRemarkRehypeOptions,
+  recmaPlugins,
+  rehypePlugins,
+  remarkPlugins,
+} from "@/utils/mdx";
+import { getMarkdownFile, getMarkdownFiles } from "@/utils/file";
 import { getRandomInteger, replaceLastDotWithDash } from "@/utils";
 import DemoStateProvider from "@/contexts/DemoStateProvider";
-import { mdxComponentsWithContext as components } from "@/mdxComponents";
+import ErrorComponent from "@/components/ErrorComponent";
+import TableResult from "@/components/TableResult";
+import HydrateLazyComponent from "@/components/HydrateLazyComponent";
+import MDXClientLazyComponent from "@/components/MDXClientLazyComponent";
+
+type Props = {
+  mdxSource?: SerializeResult<Frontmatter>;
+  data?: {
+    format: "md" | "mdx";
+    source: string;
+  };
+};
 
 /**
- * renders for both "hydrate" and "MDXClient"
+ * For demonstration purpose, the both "hydrate" and "MDXClient" to be rendered
  */
-export default function TestPage({
-  mdxSource,
-}: {
-  mdxSource: SerializeResult<Frontmatter>;
-}) {
-  const { content, mod } = hydrateLazy({ ...mdxSource, components });
-
-  // "It has been proven that the exports from the mdx are validated."
-  const proofForValidatedExports =
-    (mod as any)?.factorial?.((mod as any)?.num) === 720
-      ? "validated exports"
-      : "invalidated exports";
-
-  // "It has been proven that all exports in the mdx document are removed."
-  const proofForNoAnyExports =
-    Object.keys(mod).length === 0
-      ? "all exports removed"
-      : "invalidated removed exports";
+export default function TestPage({ mdxSource, data }: Props) {
+  if (!data || !mdxSource) {
+    return (
+      <>
+        <Head>
+          <title>Static Blog</title>
+        </Head>
+        <ErrorComponent error="The source could not found !" />
+      </>
+    );
+  }
 
   return (
     <>
       <Head>
         <title>{mdxSource.frontmatter.title}</title>
       </Head>
-      <table className="result">
-        <thead>
-          <tr>
-            <td>
-              <mark>
-                with using <strong>hydrate</strong>
-              </mark>
-              <span className="proof-for-exports">
-                <strong>
-                  {" "}
-                  {mdxSource.frontmatter.disableExports
-                    ? proofForNoAnyExports
-                    : proofForValidatedExports}
-                </strong>
-              </span>
-            </td>
-            <td>
-              <mark>
-                with using <strong>MDXClient</strong>
-              </mark>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <DemoStateProvider>{content}</DemoStateProvider>
-            </td>
-            <td>
-              <DemoStateProvider>
-                <MDXClientLazy {...mdxSource} components={components} />
-              </DemoStateProvider>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+      <DemoStateProvider>
+        <TableResult leftColumnHeader="hydrate" rightColumnHeader="MDXClient">
+          {/* on the left */}
+          <HydrateLazyComponent mdxSource={mdxSource} data={data} />
+
+          {/* on the right */}
+          <MDXClientLazyComponent mdxSource={mdxSource} data={data} />
+        </TableResult>
+      </DemoStateProvider>
     </>
   );
 }
@@ -96,21 +77,21 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
-  const { source, format, frontmatter } =
-    (await getMarkdownFile(params.slug)) ?? {};
+  const result = await getMarkdownFile(params.slug);
 
-  if (!source) {
+  if (!result) {
     return {
-      props: {
-        source: null, // undefined is not serializable
-      },
+      props: {},
     };
   }
+
+  const { source, format, frontmatter } = result;
 
   const readingTime = `${getRandomInteger(4, 10)} min.`;
 
   const options: SerializeOptions = {
     disableExports: frontmatter?.disableExports,
+    disableImports: true,
     parseFrontmatter: true,
     scope: { readingTime, props: { foo: "{props.foo} is working." } },
     vfileDataIntoScope: ["toc"], // the "remark-flexible-toc" plugin produces vfile.data.toc
@@ -119,6 +100,7 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
       remarkPlugins,
       rehypePlugins,
       recmaPlugins,
+      remarkRehypeOptions: getRemarkRehypeOptions(format),
     },
   };
 
@@ -127,5 +109,13 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
     options,
   });
 
-  return { props: { mdxSource } };
+  return {
+    props: {
+      mdxSource,
+      data: {
+        source, // I pass it for showing in case syntax error
+        format, // I pass it for composing a message for validating exports
+      },
+    },
+  };
 }

@@ -11,7 +11,10 @@ export default function StaticBlog() {
         <strong>Wellcome to static blog</strong>
         <ul>
           <li>
-            👉 <Link href="/static-blog/test-basic">Test Basic</Link>{" "}
+            👉{" "}
+            <Link href="/static-blog/test-basic">
+              Test Disabled Imports/Exports
+            </Link>{" "}
             <span>(Author: foofoo)</span>
           </li>
           <li>
@@ -42,14 +45,14 @@ export default function StaticBlog() {
           </li>
           <li>
             👉{" "}
-            <Link href="/static-blog/test-full-client?file=test-basic.mdx">
+            <Link href="/static-blog/test-full-client?slug=test-basic-mdx">
               Test Basic in Full Client
             </Link>{" "}
             <span>(Author: foofoo)</span>
           </li>
           <li>
             👉{" "}
-            <Link href="/static-blog/test-full-client?file=test-context.mdx">
+            <Link href="/static-blog/test-full-client?slug=test-context-mdx">
               Test Context in Full Client
             </Link>{" "}
             <span>(Author: barbar)</span>
@@ -57,6 +60,13 @@ export default function StaticBlog() {
           <li>
             👉 <Link href="/static-blog/test-markdown">Test Markdown File</Link>{" "}
             <span>(Author: markmark)</span>
+          </li>
+          <li>
+            👉{" "}
+            <Link href="/static-blog/test-async">
+              Test Imports (Experimental) and Exports
+            </Link>{" "}
+            <span>(Author: asyncasync)</span>
           </li>
         </ul>
       </div>

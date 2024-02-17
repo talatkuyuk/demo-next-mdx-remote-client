@@ -1,91 +1,95 @@
 import Head from "next/head";
 import {
   serialize,
-  hydrate,
-  MDXClient,
   MDXProvider,
   type SerializeOptions,
   type SerializeResult,
 } from "next-mdx-remote-client/csr";
 
-import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
+import {
+  getRemarkRehypeOptions,
+  recmaPlugins,
+  rehypePlugins,
+  remarkPlugins,
+} from "@/utils/mdx";
 import { mdxComponents as components } from "@/mdxComponents";
 import { getSource } from "@/utils/file";
-import { getRandomInteger } from "@/utils";
+import { getMarkdownExtension, getRandomInteger } from "@/utils";
 import { type Frontmatter } from "@/types";
+import MDXResultComponent from "@/components/MDXResultComponent";
+import ErrorComponent from "@/components/ErrorComponent";
+import TableResult from "@/components/TableResult";
+import HydrateWithoutComponents from "@/components/HydrateWithoutComponents";
+import MDXClientWithoutComponents from "@/components/MDXClientWithoutComponents";
+
+type Props = {
+  mdxSource?: SerializeResult<Frontmatter>;
+  data?: {
+    format: "md" | "mdx";
+    source: string;
+  };
+};
 
 /**
- * renders for both "hydrate" and "MDXClient"
+ * For demonstration purpose, the both "hydrate" and "MDXClient" to be rendered
  *
  * implements MDXProvider usage
  */
-export default function TestPage({
-  mdxSource,
-}: {
-  mdxSource: SerializeResult<Frontmatter>;
-}) {
-  // since we didn't provide the components, it is not wrapped with the <MDXProvider />
-  const { content, mod } = hydrate(mdxSource);
-
-  // "It has been proven that the exports from the mdx are validated."
-  const proofForValidatedExports =
-    (mod as any)?.factorial?.((mod as any)?.num) === 720
-      ? "validated exports"
-      : "invalidated exports";
+export default function TestPage({ mdxSource, data }: Props) {
+  if (!data || !mdxSource) {
+    return (
+      <>
+        <Head>
+          <title>Static Blog</title>
+        </Head>
+        <ErrorComponent error="The source could not found !" />
+      </>
+    );
+  }
 
   return (
     <>
       <Head>
         <title>{mdxSource.frontmatter.title}</title>
       </Head>
-      {/* Here we can provide the components wrapping with the <MDXProvider /> for both  */}
+
       <MDXProvider components={components}>
-        <table className="result">
-          <thead>
-            <tr>
-              <td>
-                <mark>
-                  with using <strong>hydrate</strong>
-                </mark>
-                <span className="proof-for-exports">
-                  <strong>{proofForValidatedExports}</strong>
-                </span>
-              </td>
-              <td>
-                <mark>
-                  with using <strong>MDXClient</strong>
-                </mark>
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{content}</td>
-              <td>
-                {/* since we didn't provide the components, it is not wrapped with the <MDXProvider /> */}
-                <MDXClient {...mdxSource} />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <TableResult leftColumnHeader="hydrate" rightColumnHeader="MDXClient">
+          {/* on the left */}
+          <HydrateWithoutComponents mdxSource={mdxSource} data={data} />
+
+          {/* on the right */}
+          <MDXClientWithoutComponents mdxSource={mdxSource} data={data} />
+        </TableResult>
       </MDXProvider>
     </>
   );
 }
 
 export async function getStaticProps() {
-  const source = await getSource("test-basic.mdx");
+  const file = "test-basic.mdx";
+  const format = getMarkdownExtension(file);
+  const source = await getSource(file);
+
+  if (!source) {
+    return {
+      props: {},
+    };
+  }
 
   const readingTime = `${getRandomInteger(4, 10)} min.`;
 
   const options: SerializeOptions = {
+    disableImports: true,
+    disableExports: true,
     parseFrontmatter: true,
     scope: { readingTime, props: { foo: "{props.foo} is working." } },
-    vfileDataIntoScope: ["toc"], // the "remark-flexible-toc" plugin produces vfile.data.toc
     mdxOptions: {
+      format,
       remarkPlugins,
       rehypePlugins,
       recmaPlugins,
+      remarkRehypeOptions: getRemarkRehypeOptions(format),
       development: process.env.NODE_ENV === "development", // for experimental
     },
   };
@@ -95,5 +99,13 @@ export async function getStaticProps() {
     options,
   });
 
-  return { props: { mdxSource } };
+  return {
+    props: {
+      mdxSource,
+      data: {
+        source, // I pass it for showing in case syntax error
+        format, // I pass it for composing a message for validating exports
+      },
+    },
+  };
 }

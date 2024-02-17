@@ -1,94 +1,71 @@
 import { Suspense } from "react";
 import { type Metadata } from "next";
 import { getFrontmatter } from "next-mdx-remote-client/utils";
-import {
-  evaluate,
-  MDXRemote,
-  type EvaluateOptions,
-} from "next-mdx-remote-client/rsc";
+import { type EvaluateOptions } from "next-mdx-remote-client/rsc";
 
-import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
-import { getSource } from "@/utils/file";
-import { getRandomInteger } from "@/utils";
+import {
+  remarkPlugins,
+  rehypePlugins,
+  recmaPlugins,
+  getRemarkRehypeOptions,
+} from "@/utils/mdx";
 import type { Frontmatter } from "@/types";
-import { mdxComponents as components } from "@/mdxComponents";
+import { getSource } from "@/utils/file";
+import { getMarkdownExtension, getRandomInteger } from "@/utils";
+import TableResult from "@/components/TableResult";
+import EvaluateComponent from "@/components/EvaluateComponent";
+import MDXRemoteComponent from "@/components/MDXRemoteComponent";
+import LoadingComponent from "@/components/LoadingComponent";
 
 export async function generateMetadata(): Promise<Metadata> {
   const source = await getSource("test-basic.mdx");
 
+  if (!source)
+    return {
+      title: "Static Docs",
+    };
+
   const frontmatter = getFrontmatter<Frontmatter>(source).frontmatter;
 
   return {
-    title: frontmatter.title,
+    title: frontmatter.title ?? "Static Docs",
   };
 }
 
 /**
- * renders for both "evaluate" and "MDXRemote"
+ * For demonstration purpose, the both "evaluate" and "MDXRemote" to be rendered
  */
 export default async function Page() {
-  const source = await getSource("test-basic.mdx");
+  const file = "test-basic.mdx";
+  const format = getMarkdownExtension(file);
+  const source = await getSource(file);
 
   const readingTime = `${getRandomInteger(4, 10)} min.`;
 
   const options: EvaluateOptions = {
     disableExports: true,
+    disableImports: true,
     parseFrontmatter: true,
     scope: { readingTime, props: { foo: "{props.foo} is working." } },
     mdxOptions: {
+      format,
       remarkPlugins,
       rehypePlugins,
       recmaPlugins,
+      remarkRehypeOptions: getRemarkRehypeOptions(format),
       development: process.env.NODE_ENV === "development", // for experimental
     },
   };
 
-  // @ts-ignore
-  const { content, mod, frontmatter } = await evaluate<Frontmatter>({
-    source,
-    components,
-    options,
-  });
-
-  // "It has been proven that all exports in the mdx document are removed."
-  const proofForNoAnyExports =
-    Object.keys(mod).length === 0
-      ? "all exports removed"
-      : "invalidated removed exports";
-
   return (
-    <table className="result">
-      <thead>
-        <tr>
-          <td>
-            <mark>
-              with using <strong>evaluate</strong>
-            </mark>
-            <span className="proof-for-exports">
-              <strong>{proofForNoAnyExports}</strong>
-            </span>
-          </td>
-          <td>
-            <mark>
-              with using <strong>MDXRemote</strong>
-            </mark>
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{content}</td>
-          <td>
-            <Suspense fallback={<p>Loading the article...</p>}>
-              <MDXRemote
-                source={source}
-                options={options}
-                components={components}
-              />
-            </Suspense>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <TableResult leftColumnHeader="evaluate" rightColumnHeader="MDXRemote">
+      {/* on the left */}
+      <EvaluateComponent source={source} format={format} options={options} />
+
+      {/* on the right */}
+      <Suspense fallback={<LoadingComponent />}>
+        <MDXRemoteComponent source={source} format={format} options={options} />
+      </Suspense>
+    </TableResult>
   );
 }

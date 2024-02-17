@@ -1,16 +1,20 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import {
-  evaluate,
-  MDXRemote,
-  type EvaluateOptions,
-} from "next-mdx-remote-client/rsc";
+import { type EvaluateOptions } from "next-mdx-remote-client/rsc";
 
 import { getMarkdownFile, getMarkdownFiles, RE } from "@/utils/file";
-import { recmaPlugins, rehypePlugins, remarkPlugins } from "@/utils/mdx";
+import {
+  getRemarkRehypeOptions,
+  recmaPlugins,
+  rehypePlugins,
+  remarkPlugins,
+} from "@/utils/mdx";
 import { getRandomInteger, replaceLastDotWithDash } from "@/utils";
-import type { Frontmatter } from "@/types";
-import { mdxComponents as components } from "@/mdxComponents";
+import TableResult from "@/components/TableResult";
+import EvaluateComponent from "@/components/EvaluateComponent";
+import LoadingComponent from "@/components/LoadingComponent";
+import MDXRemoteComponent from "@/components/MDXRemoteComponent";
+import ErrorComponent from "@/components/ErrorComponent";
 
 type Props = {
   params: { slug: string };
@@ -36,17 +40,21 @@ export async function generateStaticParams() {
   }));
 }
 
+/**
+ * For demonstration purpose, the both "hydrate" and "MDXClient" to be rendered
+ */
 export default async function Post({ params }: { params: { slug: string } }) {
-  const { source, format, frontmatter } =
-    (await getMarkdownFile(params.slug)) ?? {};
+  const result = await getMarkdownFile(params.slug);
 
-  if (!source) return <div>There is no document related.</div>;
+  if (!result) return <ErrorComponent error="The source could not found !" />;
+
+  const { source, format, frontmatter } = result;
 
   const readingTime = `${getRandomInteger(4, 10)} min.`;
 
   const options: EvaluateOptions = {
     disableExports: frontmatter?.disableExports,
-    enableImports: frontmatter?.enableImports,
+    disableImports: frontmatter?.disableImports,
     parseFrontmatter: true,
     scope: { readingTime, props: { foo: "{props.foo} is working." } },
     vfileDataIntoScope: ["toc"], // the "remark-flexible-toc" plugin produces vfile.data.toc
@@ -55,67 +63,20 @@ export default async function Post({ params }: { params: { slug: string } }) {
       remarkPlugins,
       rehypePlugins,
       recmaPlugins,
-      baseUrl: frontmatter?.enableImports ? import.meta.url : undefined,
+      remarkRehypeOptions: getRemarkRehypeOptions(format),
+      baseUrl: frontmatter?.disableImports ? undefined : import.meta.url,
     },
   };
 
-  // test both "evaluate" and "MDXRemote"
-
-  const { content, mod } = await evaluate<Frontmatter>({
-    source,
-    options,
-    components,
-  });
-
-  // "It has been proven that the exports from the mdx are validated."
-  const proofForValidatedExports =
-    (mod as any)?.factorial?.((mod as any)?.num) === 720
-      ? "validated exports"
-      : "invalidated exports";
-
-  // "It has been proven that all exports in the mdx document are removed."
-  const proofForNoAnyExports =
-    Object.keys(mod).length === 0
-      ? "all exports removed"
-      : "invalidated removed exports";
-
   return (
-    <table className="result">
-      <thead>
-        <tr>
-          <td>
-            <mark>
-              with using <strong>evaluate</strong>
-            </mark>
-            <span className="proof-for-exports">
-              <strong>
-                {frontmatter?.disableExports
-                  ? proofForNoAnyExports
-                  : proofForValidatedExports}
-              </strong>
-            </span>
-          </td>
-          <td>
-            <mark>
-              with using <strong>MDXRemote</strong>
-            </mark>
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{content}</td>
-          <td>
-            <Suspense fallback={<p>Loading the article...</p>}>
-              <MDXRemote
-                source={source}
-                options={options}
-                components={components}
-              />
-            </Suspense>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <TableResult leftColumnHeader="evaluate" rightColumnHeader="MDXRemote">
+      {/* on the left */}
+      <EvaluateComponent source={source} format={format} options={options} />
+
+      {/* on the right */}
+      <Suspense fallback={<LoadingComponent />}>
+        <MDXRemoteComponent source={source} format={format} options={options} />
+      </Suspense>
+    </TableResult>
   );
 }

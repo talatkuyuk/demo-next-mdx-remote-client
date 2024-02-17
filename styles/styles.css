@@ -36,6 +36,11 @@ table.result td:last-child {
   width: 50%;
 }
 
+table.result pre,
+table.result code {
+  white-space: pre-wrap;
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -61,6 +66,14 @@ li h6 {
 }
 
 div#mdx-layout {
+  padding-inline: 0.5rem;
+}
+
+div#mdx-error {
+  padding-inline: 0.5rem;
+}
+
+div#mdx-loading {
   padding-inline: 0.5rem;
 }
 
@@ -125,12 +138,20 @@ p.demo-context span.demo-context-counter {
   color: blue;
 }
 
-.proof-for-exports {
+.left-corner-absolute-note {
   position: absolute;
   top: 0;
   left: 0;
   color: blue;
   margin-left: 0.5rem;
+}
+
+.right-corner-absolute-note {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: blue;
+  margin-right: 0.5rem;
 }
 
 pre {
@@ -146,6 +167,40 @@ pre {
 
 .remark-code-container pre {
   margin-top: 0;
+}
+
+pre .pre-language-label {
+  position: absolute;
+  top: 0;
+  right: 10%;
+  background-color: rgb(210, 245, 140);
+  color: rgb(20, 18, 18);
+  padding: 5px 0.5rem;
+  font-size: 80%;
+  box-shadow: 0px 6px 10px -2px rgba(0, 0, 0, 0.1);
+}
+
+pre button.pre-copy-button {
+  padding: 0.2em;
+  color: #ccc;
+  background-color: #3976d7;
+  border-radius: 5px;
+  cursor: pointer;
+
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+
+  display: grid;
+  place-items: center;
+
+  opacity: 0;
+  visibility: hidden;
+
+  pre:hover & {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 blockquote {

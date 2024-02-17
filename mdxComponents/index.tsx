@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { type MDXComponents } from "next-mdx-remote-client/rsc";
 
 import Button from "./Button";
@@ -9,27 +10,27 @@ import ContextConsumer from "./ContextConsumer";
 import Toc from "./Toc";
 import BlockQuote, { default as blockquote } from "./BlockQuote";
 import Admonition, { admonition } from "./Admonition";
-import Link from "next/link";
-// import CustomImage from "./CustomImage";
+import pre from "./pre";
 
 export const mdxComponents: MDXComponents = {
+  Toc,
   Button,
   CountButton,
   Hello,
-  strong: (props: React.HTMLAttributes<HTMLElement>) => (
+  Dynamic: dynamic(() => import("./dynamic")),
+  strong: (props: React.ComponentPropsWithoutRef<"strong">) => (
     <strong className="custom-strong" {...props} />
   ),
-  Dynamic: dynamic(() => import("./dynamic")),
   wrapper: (props: { children: any }) => {
     return <div id="mdx-layout">{props.children}</div>;
   },
   Image, // Image: CustomImage,
   Link,
-  Toc,
   blockquote,
   BlockQuote,
   admonition,
   Admonition,
+  pre,
 };
 
 export const mdxComponentsWithContext = {

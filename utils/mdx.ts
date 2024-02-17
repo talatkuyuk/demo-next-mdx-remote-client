@@ -16,6 +16,7 @@ import recmaMdxChangeProps from "recma-mdx-change-props";
 
 import remarkFlexibleToc, { FlexibleTocOptions, type TocItem } from "./plugin";
 import { toTitleCase } from ".";
+import { code, html } from "./rehype-handlers";
 
 const baseRemarkPlugins: PluggableList = [
   remarkGfm,
@@ -66,3 +67,7 @@ export const recmaPlugins: PluggableList = [
   [recmaMdxEscapeMissingComponents, ["Bar", "Toc"]],
   recmaMdxChangeProps,
 ];
+
+export function getRemarkRehypeOptions(format: "md" | "mdx") {
+  return { handlers: { ...(format === "md" && { html }), code } };
+}

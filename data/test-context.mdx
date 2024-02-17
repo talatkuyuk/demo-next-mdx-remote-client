@@ -9,8 +9,6 @@ _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link
 
 # {frontmatter.title}
 
-<Toc toc={toc} indented skipParents={["listItem", "container"]} />
-
 ## Section 1
 
 ### Heading For Components
@@ -21,7 +19,7 @@ _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link
 
 <ContextConsumer />
 
-<Bar enabled={frontmatter.enableImports} />
+<Bar status={frontmatter.disableImports} />
 
 <Dynamic />
 
@@ -47,7 +45,7 @@ You have to put an empty line after `export` statements in the mdx files.
 :::
 
 :::danger Exports May Be harmful
-<p>Can you explain why the `exports` may cause harmful activities ?</p>
+Can you explain why the `exports` may cause harmful activities ?
 <details>
   <summary>**The ways of removing exports**</summary>
   + You can use `disableExports: true` option to remove all `export` statements

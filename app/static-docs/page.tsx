@@ -11,7 +11,10 @@ export default async function Docs() {
       <strong>Wellcome to static docs</strong>
       <ul>
         <li>
-          👉 <Link href="/static-docs/test-basic">Test Basic</Link>{" "}
+          👉{" "}
+          <Link href="/static-docs/test-basic">
+            Test Basic Disabled Imports/Exports
+          </Link>{" "}
           <span>(Author: foofoo)</span>
         </li>
         <li>
@@ -29,13 +32,16 @@ export default async function Docs() {
           <span>(Author: toctoc)</span>
         </li>
         <li>
-          👉 <Link href="/static-docs/test-error">Test Basic with Error</Link>{" "}
+          👉{" "}
+          <Link href="/static-docs/test-error">
+            Test Basic with MDX Syntax Error
+          </Link>{" "}
           <span>(Author: errorr)</span>
         </li>
         <li>
           👉{" "}
           <Link href="/static-docs/test-esm">
-            Test Enabling Imports/Exports
+            Test Including Imports/Exports
           </Link>{" "}
           <span>(Author: impexp)</span>
         </li>

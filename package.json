@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development next dev",
+    "dev": "next dev",
+    "devdev": "NODE_ENV=development next dev",
     "build": "next build",
     "start": "next start",
     "start:dev": "next start",
@@ -12,7 +13,7 @@
   "dependencies": {
     "clsx": "^2.1.0",
     "github-slugger": "^2.0.0",
-    "next": "^14.1.0",
+    "next": "^13.5.6",
     "next-mdx-remote-client": "file:next-mdx-remote-client-0.0.2.tgz",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,7 +30,8 @@
     "remark-flexible-paragraphs": "^1.0.4",
     "remark-gfm": "^4.0.0",
     "sharp": "^0.33.2",
-    "swr": "^2.2.4"
+    "swr": "^2.2.4",
+    "unist-builder": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

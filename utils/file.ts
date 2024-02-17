@@ -12,15 +12,25 @@ import {
 export const RE = /\.mdx?$/u; // Only .md(x) files
 // text.replace(RE, "")
 
-export const getSource = async (filename: string): Promise<string> => {
-  const sourcePath = path.join(process.cwd(), "data", filename);
-  if (!fs.existsSync(sourcePath)) return "No file founded !";
+export const getSourceFromPath = async (
+  filename: string
+): Promise<string | undefined> => {
+  const sourcePath = path.join(process.cwd(), filename);
+  if (!fs.existsSync(sourcePath)) return;
   return await fs.promises.readFile(sourcePath, "utf8");
 };
 
-export const getSourceSync = (filename: string): string => {
+export const getSource = async (
+  filename: string
+): Promise<string | undefined> => {
   const sourcePath = path.join(process.cwd(), "data", filename);
-  if (!fs.existsSync(sourcePath)) return "No file founded !";
+  if (!fs.existsSync(sourcePath)) return;
+  return await fs.promises.readFile(sourcePath, "utf8");
+};
+
+export const getSourceSync = (filename: string): string | undefined => {
+  const sourcePath = path.join(process.cwd(), "data", filename);
+  if (!fs.existsSync(sourcePath)) return;
   return fs.readFileSync(sourcePath, "utf8");
 };
 
@@ -40,16 +50,24 @@ export const getMarkdownFile = async (
     }
   | undefined
 > => {
-  const filename = replaceLastDashWithDot(slug);
+  if (!/-mdx?$/.test(slug)) return;
+
+  const filename = replaceLastDashWithDot(slug) as
+    | `${string}.md`
+    | `${string}.mdx`;
+
   const fullPath = path.join(process.cwd(), "data", filename);
 
   if (fs.existsSync(fullPath)) {
     const source = await getSource(filename);
+
+    if (!source) return;
+
     const frontmatter = getFrontmatter<Frontmatter>(source).frontmatter;
 
     return {
       source,
-      format: getMarkdownExtension(filename) ?? "md",
+      format: getMarkdownExtension(filename),
       frontmatter,
     };
   }
@@ -57,8 +75,10 @@ export const getMarkdownFile = async (
 
 export const getFrontmatterAndSlug = (
   filename: string
-): FrontmatterWithSlug => {
+): FrontmatterWithSlug | undefined => {
   const source = getSourceSync(filename);
+
+  if (!source) return;
 
   const frontmatter = getFrontmatter<Frontmatter>(source).frontmatter;
 

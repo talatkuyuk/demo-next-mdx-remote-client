@@ -21,12 +21,12 @@ export default async function Docs() {
       <strong>Wellcome to dynamic docs</strong>
       <ul>
         {frontmatters.map((frontmatter) => (
-          <li key={frontmatter.title}>
+          <li key={frontmatter?.title}>
             👉{" "}
-            <Link href={`/dynamic-docs/${frontmatter.slug}`}>
-              {frontmatter.title}
+            <Link href={`/dynamic-docs/${frontmatter?.slug}`}>
+              {frontmatter?.title}
             </Link>{" "}
-            <span>(Author: {frontmatter.author})</span>
+            <span>(Author: {frontmatter?.author})</span>
           </li>
         ))}
       </ul>

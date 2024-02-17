@@ -2,6 +2,7 @@
 title: "Test MDX Syntax in Markdown 'md' File"
 author: "markdown"
 ---
+
 ::: note
 I kept the document structure **the same** to see how markdown behaves to javascript expressions in curlybraces `{}` and mdx syntax.
 :::
@@ -12,6 +13,8 @@ _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link
 
 # {frontmatter.title}
 
+<Toc toc={toc} ordered indented maxDepth={5} tight />
+
 ## Section 1
 
 ### Heading For Components
@@ -20,7 +23,7 @@ _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link
 
 <CountButton />
 
-<Bar enabled={frontmatter.enableImports} />
+<Bar status={frontmatter.disableImports} />
 
 <Dynamic />
 
@@ -48,11 +51,11 @@ All **javascript statements** in `{ }` are considered as just text in markdown.
 :::
 
 ::: tip
-<span>The **markdown syntax** inside **a block-level `HTML` element** like `<p>`or `<details>` doesn't work in markdown, but works in **inline-level `HTML` elements** like `<span>`.</span>
+<span>The **markdown syntax** inside **a block-level `HTML` element** like `<p>` or `<details>` doesn't work in markdown, but works in **inline-level `HTML` elements** like `<span>`.</span>
 :::
 
 ::: danger Pay Attention
-<p>The `allowDangerousHtml` is set to `true` by default in `mdx-js/mdx`. If the file is markdown "md" format, `html` elements are removed in case you don't use `rehype-raw` plugin.</p>
+The `allowDangerousHtml` is set to `true` by default in `mdx-js/mdx`. If the file is markdown "md" format, `html` elements are removed in case you don't use `rehype-raw` plugin.
 <details>
   <summary>**Markdown syntax doesn't work in details-summary**</summary>
   + List item - 1
@@ -126,10 +129,8 @@ escape opening curlybraces "\{}"
 > <span>=g=blockquate markdown element==</span>
 
 <BlockQuote>
-
-  All tag/component names are lowercased by `rehype-raw` via `parse5` parser. Luckily lowercased tag is a valid HTML tag as well. I put empty lines inside `<blockquote>` block-level HTML element in order markdown syntax works. <span>=g=blockquate html element==</span>
-
-</blockquote>
+  A custom `remark-rehype` handler made all React Components stripped out, including this. If would not, what would happened? All component names are lowercased by `rehype-raw` via `parse5` parser. This component name also would became `blockquote` luckily after lowercased and would be valid HTML tag as well. Additionally If I put empty lines inside, markdown syntax will work in the `blockquote` block-level HTML element. <span>=g=blockquate html element==</span>
+</BlockQuote>
 
 export const num = 6;
 

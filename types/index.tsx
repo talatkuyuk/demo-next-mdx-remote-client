@@ -2,7 +2,7 @@ export type Frontmatter = {
   title: string;
   author: string;
   disableExports: boolean;
-  enableImports: boolean;
+  disableImports: boolean;
 };
 
 export type FrontmatterWithSlug = Frontmatter & {

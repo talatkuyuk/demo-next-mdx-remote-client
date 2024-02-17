@@ -1,3 +1,5 @@
+"use client";
+
 import React, { type CSSProperties } from "react";
 import { useRouter } from "next/router";
 import BeatLoader from "react-spinners/BeatLoader";

@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     "mdxComponents/foo.jsx",
     "app/static-docs/test-esm/foo.jsx",
-    "z-sil.js"
+    "z-sil.js",
+    "components/ErrorBoundary1.jsx"
   ],
   "exclude": ["node_modules"]
 }

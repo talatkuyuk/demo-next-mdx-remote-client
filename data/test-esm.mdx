@@ -1,7 +1,6 @@
 ---
 title: "Test MDX with Enabling Imports/Exports"
 author: "esmesm"
-enableImports: true
 ---
 
 import Bar from "../../../mdxComponents/Bar.mjs";
@@ -9,8 +8,6 @@ import Bar from "../../../mdxComponents/Bar.mjs";
 _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link>_
 
 # {frontmatter.title}
-
-<Toc toc={toc} indented skipParents={["listItem", "container"]} />
 
 ## Section 1
 
@@ -20,7 +17,7 @@ _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link
 
 <CountButton />
 
-<Bar enabled={frontmatter.enableImports} />
+<Bar status={frontmatter.disableImports} />
 
 <Dynamic />
 
@@ -46,7 +43,7 @@ You have to put an empty line after `export` statements in the mdx files.
 :::
 
 :::danger Exports May Be harmful
-<p>Can you explain why the `exports` may cause harmful activities ?</p>
+Can you explain why the `exports` may cause harmful activities ?
 <details>
   <summary>**The ways of removing exports**</summary>
   + You can use `disableExports: true` option to remove all `export` statements
@@ -117,12 +114,12 @@ escape opening curlybraces "\{}"
 
 ~|> Centering **text** and **image** is very easy !
 ~|> <Image src="/images/cover.png" alt="cover" width={180} height={40} />
+~|> ![cover](/images/cover.png)
 
 #### SubHeading For Blockquates
 
 > The `@import` is used to **import style rules** from other valid stylesheets.
 > <span>=g=blockquate markdown element==</span>
-~|> ![cover](/images/cover.png)
 
 <BlockQuote>
   The `@import` is used to **import style rules** from other valid stylesheets.
