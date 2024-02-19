@@ -8,13 +8,16 @@ import remarkFlexibleContainers, {
   type FlexibleContainerOptions,
 } from "remark-flexible-containers";
 import remarkFlexibleParagraphs from "remark-flexible-paragraphs";
+import remarkFlexibleToc, {
+  type FlexibleTocOptions,
+  type TocItem,
+} from "remark-flexible-toc";
 import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import recmaMdxEscapeMissingComponents from "recma-mdx-escape-missing-components";
 import recmaMdxChangeProps from "recma-mdx-change-props";
 
-import remarkFlexibleToc, { FlexibleTocOptions, type TocItem } from "./plugin";
 import { toTitleCase } from ".";
 import { code, html } from "./rehype-handlers";
 

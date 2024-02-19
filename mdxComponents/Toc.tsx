@@ -1,7 +1,7 @@
 "use client";
 
 import { clsx } from "clsx";
-import type { TocItem, HeadingDepths, HeadingParents } from "../utils/plugin";
+import type { TocItem, HeadingDepth, HeadingParent } from "remark-flexible-toc";
 
 import styles from "./Toc.module.css";
 
@@ -15,13 +15,13 @@ import styles from "./Toc.module.css";
 // skipParents — disallow headings to be children of certain node types,(if the parent is "root", it is not skipped)
 type Props = {
   toc: TocItem[];
-  maxDepth?: HeadingDepths;
+  maxDepth?: HeadingDepth;
   indented?: boolean;
   ordered?: boolean;
   tight?: boolean;
   exclude?: string | string[];
-  skipLevels?: HeadingDepths[];
-  skipParents?: Exclude<HeadingParents, "root">[];
+  skipLevels?: HeadingDepth[];
+  skipParents?: Exclude<HeadingParent, "root">[];
 };
 
 const Toc = ({

@@ -4,6 +4,7 @@ import {
   type SerializeOptions,
   type SerializeResult,
 } from "next-mdx-remote-client/csr";
+import { type TocItem } from "remark-flexible-toc";
 
 import {
   getRemarkPlugins,
@@ -14,7 +15,6 @@ import {
 import { getSource } from "@/utils/file";
 import { getMarkdownExtension, getRandomInteger } from "@/utils";
 import { type Frontmatter } from "@/types";
-import { type TocItem } from "@/utils/plugin";
 import ErrorComponent from "@/components/ErrorComponent";
 import TableResult from "@/components/TableResult";
 import HydrateWithComponents from "@/components/HydrateWithComponents";

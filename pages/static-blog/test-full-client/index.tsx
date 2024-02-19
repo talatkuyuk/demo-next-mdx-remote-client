@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import { SerializeResult, serialize } from "next-mdx-remote-client/csr";
 
 import {

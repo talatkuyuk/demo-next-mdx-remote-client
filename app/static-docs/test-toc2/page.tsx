@@ -2,9 +2,9 @@ import { Suspense } from "react";
 import { type Metadata } from "next";
 import { getFrontmatter } from "next-mdx-remote-client/utils";
 import { type EvaluateOptions } from "next-mdx-remote-client/rsc";
+import { type TocItem } from "remark-flexible-toc";
 
 import {
-  remarkPlugins,
   rehypePlugins,
   recmaPlugins,
   getRemarkRehypeOptions,
@@ -17,7 +17,6 @@ import TableResult from "@/components/TableResult";
 import EvaluateComponent from "@/components/EvaluateComponent";
 import MDXRemoteComponent from "@/components/MDXRemoteComponent";
 import LoadingComponent from "@/components/LoadingComponent";
-import { type TocItem } from "@/utils/plugin";
 
 export async function generateMetadata(): Promise<Metadata> {
   const source = await getSource("test-basic.mdx");
