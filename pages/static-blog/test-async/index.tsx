@@ -81,26 +81,23 @@ export default function TestPage({ mdxSource, data }: Props) {
     "https://gist.githubusercontent.com/talatkuyuk/77add43c41fdfb197244ab9a43cba9d2/raw/f23d37aed3fa54f6f1ded8f654c081bbf3c07b63/Bar.mjs";
 
   const options = {
-    mdxOptions: {
-      baseUrl: import.meta.url,
-      // baseUrl: remote_url,
-    },
+    baseUrl: import.meta.url,
+    // baseUrl: remote_url,
   };
 
   const loading = () => <LoadingComponent />;
 
-  const onError = (error: any) => (
+  const onError = ({ error }: { error: Error }) => (
     <>
-      <ErrorComponent error={error as Error} />
+      <ErrorComponent error={error} />
       <CompiledSourceComponent compiledSource={mdxSource.compiledSource} />
     </>
   );
 
-  const { content, mod } = hydrateAsync({
+  const { content, mod, error } = hydrateAsync({
     ...mdxSource,
     components,
     options,
-    onError,
     loading,
   });
 
@@ -122,7 +119,7 @@ export default function TestPage({ mdxSource, data }: Props) {
       >
         {/* on the left */}
         <>
-          {content}
+          {error ? onError({ error }) : content}
 
           {/* Just for a message about validating exports */}
           <span className="left-corner-absolute-note">
@@ -136,8 +133,8 @@ export default function TestPage({ mdxSource, data }: Props) {
             {...mdxSource}
             components={components}
             options={options}
-            onError={onError}
             loading={loading}
+            onError={onError} // if not provided, you should use an error boundary
           />
 
           {/* Just for format prop to show */}
