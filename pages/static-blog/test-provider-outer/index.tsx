@@ -12,14 +12,13 @@ import {
   rehypePlugins,
   remarkPlugins,
 } from "@/utils/mdx";
-import { mdxComponents as components } from "@/mdxComponents";
 import { getSource } from "@/utils/file";
 import { getMarkdownExtension, getRandomInteger } from "@/utils";
 import { type Frontmatter } from "@/types";
 import ErrorComponent from "@/components/ErrorComponent";
 import TableResult from "@/components/TableResult";
-import HydrateWithoutComponents from "@/components/HydrateWithoutComponents";
-import MDXClientWithoutComponents from "@/components/MDXClientWithoutComponents";
+import HydrateWithComponents from "@/components/HydrateWithComponents";
+import MDXClientWithComponents from "@/components/MDXClientWithComponents";
 
 type Props = {
   mdxSource?: SerializeResult<Frontmatter>;
@@ -52,13 +51,25 @@ export default function TestPage({ mdxSource, data }: Props) {
         <title>{mdxSource.frontmatter.title}</title>
       </Head>
 
-      <MDXProvider components={components}>
+      <MDXProvider
+        components={{
+          ComponentFromOuterProvider: () => {
+            return (
+              <div className="outer-content">
+                <p style={{ color: "darkorange" }}>
+                  *** I am a component coming from outer MDXProvider ***
+                </p>
+              </div>
+            );
+          },
+        }}
+      >
         <TableResult leftColumnHeader="hydrate" rightColumnHeader="MDXClient">
           {/* on the left */}
-          <HydrateWithoutComponents mdxSource={mdxSource} data={data} />
+          <HydrateWithComponents mdxSource={mdxSource} data={data} />
 
           {/* on the right */}
-          <MDXClientWithoutComponents mdxSource={mdxSource} data={data} />
+          <MDXClientWithComponents mdxSource={mdxSource} data={data} />
         </TableResult>
       </MDXProvider>
     </>

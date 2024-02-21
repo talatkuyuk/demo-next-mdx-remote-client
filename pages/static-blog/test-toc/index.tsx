@@ -14,7 +14,6 @@ import {
 import { getSource } from "@/utils/file";
 import { getMarkdownExtension, getRandomInteger } from "@/utils";
 import { type Frontmatter } from "@/types";
-import MDXResultComponent from "@/components/MDXResultComponent";
 import ErrorComponent from "@/components/ErrorComponent";
 import TableResult from "@/components/TableResult";
 import HydrateWithComponents from "@/components/HydrateWithComponents";

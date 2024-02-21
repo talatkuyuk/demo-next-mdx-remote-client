@@ -26,6 +26,13 @@ export default function StaticBlog() {
             <span>(Author: foofoo)</span>
           </li>
           <li>
+            👉{" "}
+            <Link href="/static-blog/test-provider-outer">
+              Test Provider Outer
+            </Link>{" "}
+            <span>(Author: foofoo)</span>
+          </li>
+          <li>
             👉 <Link href="/static-blog/test-error">Test Error</Link>{" "}
             <span>(Author: errorr)</span>
           </li>

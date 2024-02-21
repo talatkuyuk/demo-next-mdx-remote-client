@@ -67,7 +67,10 @@ export const rehypePlugins: PluggableList = [
 ];
 
 export const recmaPlugins: PluggableList = [
-  [recmaMdxEscapeMissingComponents, ["Bar", "Toc"]],
+  [
+    recmaMdxEscapeMissingComponents,
+    ["Bar", "Toc", "ComponentFromOuterProvider"],
+  ],
   recmaMdxChangeProps,
 ];
 
