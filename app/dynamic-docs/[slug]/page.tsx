@@ -71,7 +71,9 @@ export default async function Post({ params }: { params: { slug: string } }) {
   return (
     <TableResult leftColumnHeader="evaluate" rightColumnHeader="MDXRemote">
       {/* on the left */}
-      <EvaluateComponent source={source} format={format} options={options} />
+      <Suspense fallback={<LoadingComponent />}>
+        <EvaluateComponent source={source} format={format} options={options} />
+      </Suspense>
 
       {/* on the right */}
       <Suspense fallback={<LoadingComponent />}>

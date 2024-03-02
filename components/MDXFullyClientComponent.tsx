@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { serialize, type SerializeResult } from "next-mdx-remote-client/csr";
+import {
+  serialize,
+  type SerializeResult,
+} from "next-mdx-remote-client/serialize";
 
 import { getRandomInteger } from "@/utils";
 import {

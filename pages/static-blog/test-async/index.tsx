@@ -1,9 +1,11 @@
 import Head from "next/head";
 import {
   serialize,
+  type SerializeOptions,
+} from "next-mdx-remote-client/serialize";
+import {
   hydrateAsync,
   MDXClientAsync,
-  type SerializeOptions,
   type SerializeResult,
 } from "next-mdx-remote-client/csr";
 

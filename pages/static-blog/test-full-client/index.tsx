@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { SerializeResult, serialize } from "next-mdx-remote-client/csr";
+import {
+  serialize,
+  type SerializeResult,
+} from "next-mdx-remote-client/serialize";
 
 import {
   getRemarkRehypeOptions,

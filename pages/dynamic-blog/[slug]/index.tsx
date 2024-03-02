@@ -3,7 +3,7 @@ import {
   serialize,
   type SerializeOptions,
   type SerializeResult,
-} from "next-mdx-remote-client/csr";
+} from "next-mdx-remote-client/serialize";
 
 import type { Frontmatter } from "@/types";
 import { getMarkdownFile, getMarkdownFiles } from "@/utils/file";

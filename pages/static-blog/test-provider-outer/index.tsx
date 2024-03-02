@@ -1,10 +1,10 @@
 import Head from "next/head";
 import {
   serialize,
-  MDXProvider,
   type SerializeOptions,
   type SerializeResult,
-} from "next-mdx-remote-client/csr";
+} from "next-mdx-remote-client/serialize";
+import { MDXProvider } from "next-mdx-remote-client/csr";
 
 import {
   getRemarkRehypeOptions,

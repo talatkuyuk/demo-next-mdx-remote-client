@@ -39,7 +39,7 @@ const MDXRemoteComponent = ({ source, format, options }: Props) => {
         source={source}
         options={options}
         components={components}
-        onError={onError} // if not provided, you should use an error boundary
+        onError={onError} // Some errors couldn't be catched, you should use an error boundary
       />
 
       {/* Just for format prop to show */}
