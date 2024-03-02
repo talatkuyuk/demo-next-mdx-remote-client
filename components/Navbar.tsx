@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const Navigation = () => {
+const Navbar = () => {
   const path = usePathname();
   const [current, setCurrent] = useState<string | null>(null);
 
@@ -77,4 +77,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default Navbar;

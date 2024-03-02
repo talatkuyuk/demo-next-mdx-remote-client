@@ -2,10 +2,11 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 
 import NavigationLoader from "@/components/NavigationLoader";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/Navbar";
 import "@/styles/styles.css";
 import "@/styles/hljs.css";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+// eslint-disable-next-line
 import ErrorBoundaryInner from "@/components/ErrorBoundary2";
 import ErrorComponent from "@/components/ErrorComponent";
 
