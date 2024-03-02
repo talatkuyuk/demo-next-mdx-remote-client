@@ -7,8 +7,27 @@ body {
   padding-right: 6px; /* Adjust this value based on scrollbar width in your browser */
 }
 
-table,
-td,
+.card {
+  color: #6558d3;
+  background-color: #f1eeff;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+
+  display: flex;
+}
+
+.card p {
+  display: grid;
+  margin: 1rem;
+}
+
+.card p span {
+  font-size: 75%;
+  color: #a69fd6;
+}
+
+table td,
 th {
   border: 1px solid black;
 }
