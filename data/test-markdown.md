@@ -31,7 +31,7 @@ _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link
 
 #### SubHeading For Flexible Markers
 
-Marked texts: ==text with yellow==, =r=text with red==, =g=text with green==, and =b=text with blue==.
+Marked texts: ==text with **yellow**==, =r=text with **red**==, =g=text with **green**==, and =b=text with **blue**==.
 
 #### SubHeading For Emojies
 
@@ -66,6 +66,10 @@ The `allowDangerousHtml` is set to `true` by default in `mdx-js/mdx`. If the fil
 
 ::: info Table of Contents (TOC)
 The remark plugin `remark-toc` is one of the tool for creating TOC inline in the markdown files.
+:::
+
+::: details {details} Sample Details-Summary {summary}
+The `remark-flexible-containers` can also make this kind of `details`-`summary` HTML elements.
 :::
 
 ### Heading For Code Highlighting

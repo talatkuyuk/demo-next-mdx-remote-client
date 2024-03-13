@@ -25,7 +25,7 @@ _Read in {readingTime}, written by <Link href="#">**{frontmatter.author}**</Link
 
 #### SubHeading For Flexible Markers
 
-Marked texts: ==text with yellow==, =r=text with red==, =g=text with green==, and =b=text with blue==.
+Marked texts: ==text with **yellow**==, =r=text with **red**==, =g=text with **green**==, and =b=text with **blue**==.
 
 #### SubHeading For Emojies
 
@@ -38,11 +38,11 @@ Some **markdown** _content_ :+1:
 
 #### SubHeading For Flexible Containers
 
-:::warning 
+::: warning 
 You have to put an empty line after `export` statements in the mdx files.
 :::
 
-:::danger Exports May Be harmful
+::: danger Exports May Be harmful
 Can you explain why the `exports` may cause harmful activities ?
 <details>
   <summary>**The ways of removing exports**</summary>
@@ -53,12 +53,16 @@ Can you explain why the `exports` may cause harmful activities ?
 </details>
 :::
 
-:::tip Some Usefull Tips
+::: tip Some Usefull Tips
 #### Recma Plugins
 Recma plugins are very usefull for solving specific mdx issues.
 #### Table of Contents (TOC)
 The remark plugin `remark-flexible-toc` is the tool for creating TOC, especially for the mdx users.
 You can create a custom `<Toc />` component, and use it in the mdx file like `<Toc toc={toc} />`.
+:::
+
+::: details \{details} Sample Details-Summary \{summary}
+The `remark-flexible-containers` can also make this kind of `details`-`summary` HTML elements.
 :::
 
 ### Heading For Code Highlighting
