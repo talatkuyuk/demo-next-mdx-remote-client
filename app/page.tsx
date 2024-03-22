@@ -34,6 +34,15 @@ export default async function Home() {
           <strong>{process.env.NODE_ENV}</strong>
         </p>
       </div>
+      <p style={{ marginTop: "0.5rem" }}>
+        Visit for &nbsp;
+        <a
+          href="https://github.com/talatkuyuk/demo-next-mdx-remote-client"
+          target="_blank"
+        >
+          source code in github
+        </a>
+      </p>
     </main>
   );
 }
