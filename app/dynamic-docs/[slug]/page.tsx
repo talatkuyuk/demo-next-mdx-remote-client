@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { frontmatter } = (await getMarkdownFile(params.slug)) ?? {};
 
   return {
-    title: frontmatter?.title ?? "Dynamic Docs",
+    title: frontmatter?.title ?? "Dynamic Doc",
   };
 }
 
@@ -41,12 +41,14 @@ export async function generateStaticParams() {
 }
 
 /**
- * For demonstration purpose, the both "hydrate" and "MDXClient" to be rendered
+ * For demonstration purpose, the both "evaluate" and "MDXRemote" to be rendered
  */
 export default async function Post({ params }: { params: { slug: string } }) {
   const result = await getMarkdownFile(params.slug);
 
-  if (!result) return <ErrorComponent error="The source could not found !" />;
+  if (!result) {
+    return <ErrorComponent error="The source could not found !" />;
+  }
 
   const { source, format, frontmatter } = result;
 

@@ -1,10 +1,11 @@
 {
-  "name": "demo-next-mdx-remote-client",
+  "name": "testing-app-for-next-mdx-remote-client",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "devdev": "NODE_ENV=development next dev",
+    "dev:dev": "NODE_ENV=development next dev",
+    "dev:https": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "start:dev": "next start",

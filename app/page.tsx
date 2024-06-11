@@ -5,7 +5,7 @@ type Repository = {
 };
 
 export const metadata: Metadata = {
-  title: "Main Page",
+  title: "Ipikuka Blog Main Page",
 };
 
 export default async function Home() {
